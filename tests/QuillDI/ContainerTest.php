@@ -7,7 +7,6 @@ namespace QuillDI;
 use PHPUnit\Framework\TestCase;
 use QuillDI\Exceptions\UnableToCreateReflectionClassException;
 use QuillDIMocks\Database\MockDatabase;
-use QuillDIMocks\Loop\First;
 use QuillDIMocks\Simple\MockController;
 
 final class ContainerTest extends TestCase

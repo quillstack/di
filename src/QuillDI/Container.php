@@ -10,7 +10,6 @@ use QuillDI\Exceptions\InterfaceDefinitionNotFoundException;
 use QuillDI\Exceptions\ParameterDefinitionNotFoundException;
 use QuillDI\Exceptions\UnableToCreateReflectionClassException;
 use ReflectionException;
-use Throwable;
 
 /**
  * The Dependency Injection Container.
@@ -59,7 +58,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($id)
     {
@@ -71,7 +70,7 @@ final class Container implements ContainerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function has($id): bool
     {
@@ -91,7 +90,8 @@ final class Container implements ContainerInterface
             throw $exception;
         } catch (ReflectionException $exception) {
             $message = "Unable to create reflection class for `{$id}`";
-            throw new UnableToCreateReflectionClassException($message, 500 ,$exception);
+
+            throw new UnableToCreateReflectionClassException($message, 500, $exception);
         }
     }
 

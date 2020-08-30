@@ -57,7 +57,7 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function create(string $id)
     {
@@ -76,7 +76,7 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
      * Creates the instance of the class and creates the instances from the parameters, if it's required.
      *
      * @param string $id
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return mixed
      */
