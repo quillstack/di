@@ -1,5 +1,8 @@
 # Dependency Injection Container
 
+[![StyleCI](https://github.styleci.io/repos/291464853/shield?branch=master)](https://github.styleci.io/repos/291464853)
+[![Downloads](https://img.shields.io/packagist/dt/quillguild/dependency-injection.svg)](https://packagist.org/packages/quillguild/dependency-injection)
+
 The dependency injection container based on PSR-11: Container interface,
 and with the main goal: to be fast.
 
