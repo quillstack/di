@@ -35,7 +35,7 @@ final class ClassFromInterfaceFactory implements InstanceFactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function create(string $id)
     {

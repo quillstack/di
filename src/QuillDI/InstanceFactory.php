@@ -79,9 +79,9 @@ final class InstanceFactory implements InstanceFactoryInterface
      *
      * @param string $id
      *
-     * @return mixed
-     *
      * @throws ReflectionException
+     *
+     * @return mixed
      */
     public function create(string $id)
     {
@@ -101,7 +101,7 @@ final class InstanceFactory implements InstanceFactoryInterface
     /**
      * Create an instance of the instantiable class.
      *
-     * @param string $id
+     * @param string          $id
      * @param ReflectionClass $class
      *
      * @return mixed
