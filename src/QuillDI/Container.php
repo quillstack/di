@@ -63,7 +63,7 @@ final class Container implements ContainerInterface
      */
     public function get($id)
     {
-        if (!$this->has($id)) {
+        if (!isset($this->instances[$id])) {
             $this->createNewInstance($id);
         }
 
@@ -83,7 +83,7 @@ final class Container implements ContainerInterface
      *
      * @param $id
      */
-    public function createNewInstance($id): void
+    private function createNewInstance($id): void
     {
         try {
             $this->instances[$id] = $this->instanceFactory->create($id);
