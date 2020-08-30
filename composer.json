@@ -10,12 +10,12 @@
         }
     ],
     "require": {
+        "php": "^7.4",
         "psr/container": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "QuillDI\\": "src/QuillDI/",
-            "QuillDI\\Example\\": "src/Example/"
+            "QuillDI\\": "src/QuillDI/"
         }
     },
     "require-dev": {
