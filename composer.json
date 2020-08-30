@@ -1,0 +1,24 @@
+{
+    "name": "quillguild/dependency-injection",
+    "description": "The dependency injection container based on PSR-11: Container interface, and with the main goal: to be fast.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Radek Ziemniewicz",
+            "email": "radoslaw@ziemniewicz.pl"
+        }
+    ],
+    "require": {
+        "psr/container": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "QuillDI\\": "src/QuillDI/",
+            "QuillDI\\Example\\": "src/Example/"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.1"
+    }
+}
