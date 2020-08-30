@@ -27,10 +27,10 @@ final class InstantiableClassFactoryTest extends TestCase
         $this->container = new Container([], [
             MockDatabase::class => [
                 'hostname' => self::HOSTNAME,
-                'user' => self::USER,
+                'user'     => self::USER,
                 'password' => self::PASSWORD,
                 'database' => self::DATABASE,
-            ]
+            ],
         ]);
     }
 

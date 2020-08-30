@@ -19,7 +19,7 @@ final class ClassFromInterfaceFactoryTest extends TestCase
     {
         $this->factory = new ClassFromInterfaceFactory();
         $this->container = new Container([
-            MockLoggerInterface::class => MockLogger::class
+            MockLoggerInterface::class => MockLogger::class,
         ]);
     }
 

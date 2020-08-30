@@ -6,5 +6,4 @@ namespace QuillDIMocks\Errors;
 
 trait MockTrait
 {
-
 }
