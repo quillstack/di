@@ -72,3 +72,17 @@ Containers used in these tests:
 - Symfony: https://github.com/symfony/dependency-injection
 - Laminas DI: https://github.com/laminas/laminas-di
 - Aura.Di: https://github.com/auraphp/Aura.Di
+
+### Unit tests
+
+Run tests using a command:
+
+```
+phpdbg -qrr vendor/bin/phpunit
+```
+
+Check the tests coverage:
+
+```
+phpdbg -qrr vendor/bin/phpunit --coverage-html coverage tests
+```

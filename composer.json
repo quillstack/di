@@ -15,10 +15,12 @@
     },
     "autoload": {
         "psr-4": {
-            "QuillDI\\": "src/QuillDI/"
+            "QuillDI\\": "src/QuillDI/",
+            "QuillDIMocks\\": "tests/QuillDIMocks/"
         }
     },
     "require-dev": {
-        "symfony/var-dumper": "^5.1"
+        "symfony/var-dumper": "^5.1",
+        "phpunit/phpunit": "^9"
     }
 }

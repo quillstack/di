@@ -90,9 +90,8 @@ final class Container implements ContainerInterface
         } catch (ContainerException $exception) {
             throw $exception;
         } catch (ReflectionException $exception) {
-            throw new UnableToCreateReflectionClassException("Unable to create reflection class for `{$id}`");
-        } catch (Throwable $exception) {
-            throw new ContainerException("DI Container exception for ID `{$id}`");
+            $message = "Unable to create reflection class for `{$id}`";
+            throw new UnableToCreateReflectionClassException($message, 500 ,$exception);
         }
     }
 
