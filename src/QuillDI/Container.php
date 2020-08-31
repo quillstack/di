@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace QuillDI;
 
 use Psr\Container\ContainerInterface;
-use QuillDI\Exceptions\ContainerException;
 use QuillDI\Exceptions\InterfaceDefinitionNotFoundException;
 use QuillDI\Exceptions\ParameterDefinitionNotFoundException;
 use QuillDI\Exceptions\UnableToCreateReflectionClassException;
