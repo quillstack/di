@@ -86,8 +86,6 @@ final class Container implements ContainerInterface
     {
         try {
             $this->instances[$id] = $this->instanceFactory->create($id);
-        } catch (ContainerException $exception) {
-            throw $exception;
         } catch (ReflectionException $exception) {
             $message = "Unable to create reflection class for `{$id}`";
 
