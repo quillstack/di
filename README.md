@@ -1,7 +1,11 @@
 # Dependency Injection Container
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=quillguild_dependency-injection&metric=alert_status)](https://sonarcloud.io/dashboard?id=quillguild_dependency-injection)
 [![StyleCI](https://github.styleci.io/repos/291464853/shield?branch=master)](https://github.styleci.io/repos/291464853)
 [![Downloads](https://img.shields.io/packagist/dt/quillguild/dependency-injection.svg)](https://packagist.org/packages/quillguild/dependency-injection)
+[![CodeFactor](https://www.codefactor.io/repository/github/quillguild/dependency-injection/badge)](https://www.codefactor.io/repository/github/quillguild/dependency-injection)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=quillguild_dependency-injection&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=quillguild_dependency-injection)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillguild_dependency-injection&metric=coverage)](https://sonarcloud.io/dashboard?id=quillguild_dependency-injection)
 
 The dependency injection container based on PSR-11: Container interface,
 and with the main goal: to be fast.
