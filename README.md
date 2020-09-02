@@ -72,13 +72,9 @@ There's a repository where you can see the benchmark results. You can
 also do your own tests: \
 https://github.com/quillguild/dependency-injection-example
 
-Containers used in these tests:
-- Quill DI: https://github.com/quillguild/dependency-injection
-- Dice: https://github.com/Level-2/Dice
-- PHP-DI: https://github.com/PHP-DI/PHP-DI
-- Symfony: https://github.com/symfony/dependency-injection
-- Laminas DI: https://github.com/laminas/laminas-di
-- Aura.Di: https://github.com/auraphp/Aura.Di
+Containers used in tests: Quill DI, Dice, PHP-DI, Symfony,
+Laminas DI, Aura.Di. URLs and results for these solutions
+you'll find in the repository above. 
 
 ### Unit tests
 
