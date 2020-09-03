@@ -1,4 +1,4 @@
-# Dependency Injection Container
+# The Quill DI Container
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=alert_status)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Downloads](https://img.shields.io/packagist/dt/quillguild/dependency-injection.svg)](https://packagist.org/packages/quillstack/di)
@@ -89,3 +89,10 @@ Check the tests coverage:
 ```
 phpdbg -qrr vendor/bin/phpunit --coverage-html coverage tests
 ```
+
+## Quill Stack
+
+If you want to know more about other solutions, visit the website:
+http://quillstack.com/ 
+
+![The Quill Stack](quillstack.png)
