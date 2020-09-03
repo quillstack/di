@@ -1,11 +1,11 @@
 # Dependency Injection Container
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=quillguild_dependency-injection&metric=alert_status)](https://sonarcloud.io/dashboard?id=quillguild_dependency-injection)
-[![StyleCI](https://github.styleci.io/repos/291464853/shield?branch=master)](https://github.styleci.io/repos/291464853)
-[![Downloads](https://img.shields.io/packagist/dt/quillguild/dependency-injection.svg)](https://packagist.org/packages/quillguild/dependency-injection)
-[![CodeFactor](https://www.codefactor.io/repository/github/quillguild/dependency-injection/badge)](https://www.codefactor.io/repository/github/quillguild/dependency-injection)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=quillguild_dependency-injection&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=quillguild_dependency-injection)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillguild_dependency-injection&metric=coverage)](https://sonarcloud.io/dashboard?id=quillguild_dependency-injection)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=alert_status)](https://sonarcloud.io/dashboard?id=quillstack_di)
+[![Downloads](https://img.shields.io/packagist/dt/quillguild/dependency-injection.svg)](https://packagist.org/packages/quillstack/di)
+[![CodeFactor](https://www.codefactor.io/repository/github/quillstack/di/badge)](https://www.codefactor.io/repository/github/quillstack/di)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=quillstack_di)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=ncloc)](https://sonarcloud.io/dashboard?id=quillstack_di)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=coverage)](https://sonarcloud.io/dashboard?id=quillstack_di)
 
 The dependency injection container based on PSR-11: Container interface,
 and with the main goal: to be fast.
@@ -15,7 +15,7 @@ and with the main goal: to be fast.
 To install this package, run the standard command using _Composer_:
 
 ```
-composer require quillguild/dependency-injection
+composer require quillstack/di
 ```
 
 ### Usage
@@ -70,7 +70,7 @@ $controller = $container->get(ExampleController::class);
 
 There's a repository where you can see the benchmark results. You can
 also do your own tests: \
-https://github.com/quillguild/dependency-injection-example
+https://github.com/quillstack/di-examples
 
 Containers used in tests: Quill DI, Dice, PHP-DI, Symfony,
 Laminas DI, Aura.Di. URLs and results for these solutions
