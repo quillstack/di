@@ -33,7 +33,7 @@ You can easily start using a DI Container:
 ```php
 <?php
 
-use QuillDI\Container;
+use QuillStack\DI\Container;
 
 require __DIR__ . '/../vendor/autoload.php';
 
