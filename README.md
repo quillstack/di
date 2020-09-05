@@ -91,6 +91,12 @@ Check the tests coverage:
 phpdbg -qrr vendor/bin/phpunit --coverage-html coverage tests
 ```
 
+Run tests with the coverage report:
+
+```
+phpdbg -qrr vendor/bin/phpunit  --coverage-clover phpunit.coverage.xml --log-junit phpunit.report.xml
+```
+
 ## Quill Stack
 
 If you want to know more about other solutions, visit the website: \
