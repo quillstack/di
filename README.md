@@ -1,4 +1,4 @@
-# The Quill DI Container
+# QuillStack DI Container
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=alert_status)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Downloads](https://img.shields.io/packagist/dt/quillstack/di.svg)](https://packagist.org/packages/quillstack/di)
@@ -8,8 +8,8 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=ncloc)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=coverage)](https://sonarcloud.io/dashboard?id=quillstack_di)
 
-The dependency injection container based on PSR-11: Container interface,
-and with the main goal: to be fast.
+QuillStack DI Container is the dependency injection container based
+on _PSR-11: Container interface_, and with the main goal: to be fast.
 
 ### Installation
 
