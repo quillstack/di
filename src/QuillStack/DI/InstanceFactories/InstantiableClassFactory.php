@@ -83,10 +83,12 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
     private function createInstanceWithParameters(string $id, array $parameters)
     {
         foreach ($parameters as $index => $parameter) {
-            $parameterClassName = $parameter->getType()->getName();
-            $parameterName = $parameter->getName();
-
-            $parameters[$index] = $this->createParameter($parameterClassName, $parameterName);
+            $parameters[$index] = $parameter->isOptional()
+                ? $parameter->getDefaultValue()
+                : $this->createParameter(
+                    $parameter->getType()->getName(),
+                    $parameter->getName()
+                );
         }
 
         return new $id(...$parameters);

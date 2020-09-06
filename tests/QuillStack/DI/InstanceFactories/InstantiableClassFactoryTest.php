@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use QuillStack\DI\Container;
 use QuillStack\Mocks\DI\Database\MockDatabase;
 use QuillStack\Mocks\DI\Database\MockDatabaseController;
+use QuillStack\Mocks\DI\Optional\MockOptionalController;
 use QuillStack\Mocks\DI\Simple\MockController;
 use QuillStack\Mocks\DI\Simple\MockRepository;
 use QuillStack\Mocks\DI\Simple\MockService;
@@ -67,5 +68,13 @@ final class InstantiableClassFactoryTest extends TestCase
         $this->assertEquals(self::PASSWORD, $controller->database->password);
         $this->assertNotNull($controller->database->database);
         $this->assertEquals(self::DATABASE, $controller->database->database);
+    }
+
+    public function testCreatingInstanceWithOptionalParameters()
+    {
+        $controller = $this->container->get(MockOptionalController::class);
+
+        $this->assertIsString($controller->name);
+        $this->assertEquals(MockOptionalController::NAME, $controller->name);
     }
 }
