@@ -7,6 +7,8 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=ncloc)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=coverage)](https://sonarcloud.io/dashboard?id=quillstack_di)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/quillstack/di)
+![Packagist License](https://img.shields.io/packagist/l/quillstack/di)
 
 QuillStack DI Container is the dependency injection container based
 on _PSR-11: Container interface_, and with the main goal: to be fast.
