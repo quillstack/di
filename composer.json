@@ -3,7 +3,7 @@
     "description": "The dependency injection container based on PSR-11: Container interface, and with the main goal: to be fast.",
     "type": "library",
     "license": "MIT",
-    "homepage": "https://quilldi.com",
+    "homepage": "https://quillstack.com/di",
     "authors": [
         {
             "name": "Radek Ziemniewicz",
