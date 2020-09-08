@@ -1,5 +1,6 @@
 # QuillStack DI Container
 
+[![Build Status](https://travis-ci.org/quillstack/di.svg?branch=master)](https://travis-ci.org/quillstack/di)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=alert_status)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Downloads](https://img.shields.io/packagist/dt/quillstack/di.svg)](https://packagist.org/packages/quillstack/di)
 [![StyleCI](https://github.styleci.io/repos/291464853/shield?branch=master)](https://github.styleci.io/repos/291464853?branch=master)
