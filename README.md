@@ -10,6 +10,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=coverage)](https://sonarcloud.io/dashboard?id=quillstack_di)
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/quillstack/di)
 ![Packagist License](https://img.shields.io/packagist/l/quillstack/di)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/quillstack/di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/quillstack/di/?branch=master)
 
 QuillStack DI Container is the dependency injection container based
 on _PSR-11: Container interface_, and with the main goal: to be fast.
@@ -105,4 +106,4 @@ phpdbg -qrr vendor/bin/phpunit  --coverage-clover phpunit.coverage.xml --log-jun
 If you want to know more about other solutions, visit the website: \
 https://quillstack.com/ 
 
-![The Quill Stack](http://quillstack.com/quillstack.png)
+[![The Quill Stack](http://quillstack.com/quillstack.png)](https://quillstack.com/)
