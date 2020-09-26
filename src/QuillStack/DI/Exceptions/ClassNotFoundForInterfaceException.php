@@ -6,6 +6,6 @@ namespace QuillStack\DI\Exceptions;
 
 use Psr\Container\NotFoundExceptionInterface;
 
-class ParameterDefinitionNotFoundException extends ContainerException implements NotFoundExceptionInterface
+final class ClassNotFoundForInterfaceException extends ContainerException implements NotFoundExceptionInterface
 {
 }

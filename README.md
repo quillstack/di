@@ -14,6 +14,8 @@
 
 QuillStack DI Container is the dependency injection container based
 on _PSR-11: Container interface_, and with the main goal: to be fast.
+You can find the full documentation on the website: \
+https://quillstack.com/di 
 
 ### Installation
 
@@ -63,7 +65,7 @@ If some of your classes require parameters, define them as an array
 passed on the second parameter to the container:
 
 ```php
-$container = new Container([], [
+$container = new Container([
     Database::class => [
         'hostname' => 'localhost',
     ],
@@ -93,12 +95,6 @@ Check the tests coverage:
 
 ```
 phpdbg -qrr vendor/bin/phpunit --coverage-html coverage tests
-```
-
-Run tests with the coverage report:
-
-```
-phpdbg -qrr vendor/bin/phpunit  --coverage-clover phpunit.coverage.xml --log-junit phpunit.report.xml
 ```
 
 ## Quill Stack

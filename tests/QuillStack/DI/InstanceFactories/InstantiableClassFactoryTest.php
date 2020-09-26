@@ -25,7 +25,7 @@ final class InstantiableClassFactoryTest extends TestCase
     protected function setUp(): void
     {
         $this->factory = new InstantiableClassFactory();
-        $this->container = new Container([], [
+        $this->container = new Container([
             MockDatabase::class => [
                 'hostname' => self::HOSTNAME,
                 'user'     => self::USER,

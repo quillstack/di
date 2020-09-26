@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace QuillStack\DI;
 
 use Psr\Container\ContainerInterface;
+use QuillStack\DI\Exceptions\IncorrectClassTypeException;
+use QuillStack\DI\Exceptions\ClassNotFoundForInterfaceException;
 use QuillStack\DI\Exceptions\InterfaceDefinitionNotFoundException;
 use QuillStack\DI\Exceptions\ParameterDefinitionNotFoundException;
 use QuillStack\DI\Exceptions\UnableToCreateReflectionClassException;
@@ -30,29 +32,20 @@ final class Container implements ContainerInterface
     private InstanceFactory $instanceFactory;
 
     /**
-     * Configuration for interfaces.
+     * Configuration for interfaces and parameters.
      *
      * @var array
      */
-    private array $interfaces;
-
-    /**
-     * Parameters for instances.
-     *
-     * @var array
-     */
-    private array $parameters;
+    private array $config;
 
     /**
      * Container constructor.
      *
-     * @param array $interfaces
-     * @param array $parameters
+     * @param array $config
      */
-    public function __construct(array $interfaces = [], array $parameters = [])
+    public function __construct(array $config = [])
     {
-        $this->interfaces = $interfaces;
-        $this->parameters = $parameters;
+        $this->config = $config;
         $this->instanceFactory = new InstanceFactory($this);
     }
 
@@ -101,11 +94,21 @@ final class Container implements ContainerInterface
      */
     public function getInstantiableClassForInterface(string $interface)
     {
-        if (!isset($this->interfaces[$interface])) {
+        if (!isset($this->config[$interface])) {
             throw new InterfaceDefinitionNotFoundException("Interface definition `{$interface}` not found");
         }
 
-        return $this->interfaces[$interface];
+        $class = $this->config[$interface];
+
+        if (!is_string($class)) {
+            throw new IncorrectClassTypeException("Incorrect class type for interface `{$interface}`");
+        }
+
+        if (!class_exists($class)) {
+            throw new ClassNotFoundForInterfaceException("Class not found for interface `{$interface}`");
+        }
+
+        return $class;
     }
 
     /**
@@ -118,12 +121,12 @@ final class Container implements ContainerInterface
      */
     public function getParameterForClass(string $className, string $parameterName)
     {
-        if (!isset($this->parameters[$className][$parameterName])) {
+        if (!isset($this->config[$className][$parameterName])) {
             $message = "Parameter definition `{$parameterName}` for class `{$className}` not found";
 
             throw new ParameterDefinitionNotFoundException($message);
         }
 
-        return $this->parameters[$className][$parameterName];
+        return $this->config[$className][$parameterName];
     }
 }
