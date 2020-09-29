@@ -123,8 +123,12 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
     {
         foreach ($properties['properties'] as $property) {
             $name = $property->getName();
-            $type = $property->getType()->getName();
+            $type = $property->getType() ? $property->getType()->getName() : null;
             $value = $properties['defaults'][$name] ?? null;
+
+            if (!$type) {
+                continue;
+            }
 
             if ($value) {
                 $object->$name = $value;
