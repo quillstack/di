@@ -15,7 +15,9 @@
 QuillStack DI Container is the dependency injection container based
 on _PSR-11: Container interface_, and with the main goal: to be fast.
 You can find the full documentation on the website: \
-https://quillstack.com/di 
+https://quillstack.com/di
+
+This DI container uses constructors and types of the class properties.
 
 ### Installation
 
@@ -31,6 +33,7 @@ You can use Quill DI when you want:
 - To have a simple and fast DI container.
 - Define dependencies based on interfaces.
 - Define parameters e.g. credentials for a database in `Database` class.
+- To use constructors or/and class properties.
 
 #### Simple usage
 

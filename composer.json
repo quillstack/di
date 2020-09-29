@@ -3,6 +3,18 @@
     "description": "The dependency injection container based on PSR-11: Container interface, and with the main goal: to be fast.",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "dependency-injection",
+        "container",
+        "di",
+        "di-container",
+        "psr-11",
+        "php7",
+        "class",
+        "properties",
+        "property",
+        "constructor"
+    ],
     "homepage": "https://quillstack.com/di",
     "authors": [
         {
