@@ -7,6 +7,9 @@ namespace QuillStack\DI\InstanceFactories;
 use QuillStack\DI\Container;
 use QuillStack\DI\InstanceFactoryInterface;
 use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionProperty;
 
 /**
  * The factory for classes.
@@ -57,19 +60,82 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Create object with parameters to find properties later.
+     *
+     * @param string $id
+     * @param ReflectionMethod|null $constructor
+     *
+     * @return object
      */
-    public function create(string $id)
+    private function createObjectWithParameters(string $id, ReflectionMethod $constructor = null): object
     {
-        $constructor = $this->class->getConstructor();
-
         if ($constructor === null) {
             return new $id();
         }
 
+        // If we know here, that this object requires parameters, let's find them and return them later.
         $parameters = $constructor->getParameters();
 
         return $this->createInstanceWithParameters($id, $parameters);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws ReflectionException
+     */
+    public function create(string $id)
+    {
+        $constructor = $this->class->getConstructor();
+        $object = $this->createObjectWithParameters($id, $constructor);
+        $properties = $this->getProperties($object);
+
+        return $this->createInstanceWithProperties($object, $properties);
+    }
+
+    /**
+     * Finds only public properties with default values.
+     *
+     * @param $object
+     *
+     * @return array
+     * @throws ReflectionException
+     */
+    private function getProperties($object): array
+    {
+        $reflect = new ReflectionClass($object);
+
+        return [
+            'properties' => $reflect->getProperties(ReflectionProperty::IS_PUBLIC),
+            'defaults' => $reflect->getDefaultProperties(),
+        ];
+    }
+
+    /**
+     * Creates the instance of the class with properties.
+     *
+     * @param $object
+     * @param array $properties
+     *
+     * @return object
+     */
+    private function createInstanceWithProperties($object, array $properties): object
+    {
+        foreach ($properties['properties'] as $property) {
+            $name = $property->getName();
+            $type = $property->getType()->getName();
+            $value = $properties['defaults'][$name] ?? null;
+
+            if ($value) {
+                $object->$name = $value;
+            } elseif ($property->getType()->allowsNull()) {
+                $object->$name = null;
+            } elseif (class_exists($type) || interface_exists($type)) {
+                $object->$name = $this->container->get($type);
+            }
+        }
+
+        return $object;
     }
 
     /**

@@ -9,6 +9,7 @@ use QuillStack\DI\Container;
 use QuillStack\Mocks\DI\Database\MockDatabase;
 use QuillStack\Mocks\DI\Database\MockDatabaseController;
 use QuillStack\Mocks\DI\Optional\MockOptionalController;
+use QuillStack\Mocks\DI\Properties\MockProperties;
 use QuillStack\Mocks\DI\Simple\MockController;
 use QuillStack\Mocks\DI\Simple\MockRepository;
 use QuillStack\Mocks\DI\Simple\MockService;
@@ -76,5 +77,12 @@ final class InstantiableClassFactoryTest extends TestCase
 
         $this->assertIsString($controller->name);
         $this->assertEquals(MockOptionalController::NAME, $controller->name);
+    }
+
+    public function testCreatingFromProperties()
+    {
+        $properties = $this->container->get(MockProperties::class);
+
+        $this->assertInstanceOf(MockDatabase::class, $properties->getDatabase());
     }
 }
