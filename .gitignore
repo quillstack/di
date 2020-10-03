@@ -4,3 +4,4 @@ coverage
 .phpunit.result.cache
 .scannerwork/
 phpunit.*.xml
+composer.lock
