@@ -10,6 +10,7 @@ interface InstanceFactoryInterface
      * Create the instance of the class named as $id.
      *
      * @param string $id
+     * @codeCoverageIgnore
      *
      * @return mixed
      */
