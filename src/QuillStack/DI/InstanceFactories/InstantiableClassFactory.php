@@ -173,7 +173,7 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
         $parameterType = $parameter->getType();
 
         if (!$parameterType) {
-            return $this->createDefaultIfOptional($parameter);
+            return $this->createFromConfigOrGetDefault($parameter);
         }
 
         $parameterClassName = $parameterType->getName();
@@ -183,11 +183,7 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
             return $this->container->get($parameterClassName);
         }
 
-        try {
-            return $this->createParameterFromConfig($parameterName);
-        } catch (ParameterDefinitionNotFoundException $exception) {
-            return $this->createDefaultIfOptional($parameter);
-        }
+        return $this->createFromConfigOrGetDefault($parameter);
     }
 
     /**
@@ -200,6 +196,22 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
         return $parameter->isOptional()
             ? $parameter->getDefaultValue()
             : $this->createParameterFromConfig($parameter->getName());
+    }
+
+    /**
+     * @param $parameter
+     *
+     * @return mixed
+     */
+    private function createFromConfigOrGetDefault($parameter)
+    {
+        $parameterName = $parameter->getName();
+
+        try {
+            return $this->createParameterFromConfig($parameterName);
+        } catch (ParameterDefinitionNotFoundException $exception) {
+            return $this->createDefaultIfOptional($parameter);
+        }
     }
 
     /**
