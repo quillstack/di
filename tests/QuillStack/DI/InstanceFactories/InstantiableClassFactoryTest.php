@@ -10,6 +10,7 @@ use QuillStack\Mocks\DI\Database\MockDatabase;
 use QuillStack\Mocks\DI\Database\MockDatabaseController;
 use QuillStack\Mocks\DI\Optional\MockOptionalController;
 use QuillStack\Mocks\DI\ParameterConfig\MockConfig;
+use QuillStack\Mocks\DI\ParameterConfig\MockNoTypeConfig;
 use QuillStack\Mocks\DI\Properties\MockProperties;
 use QuillStack\Mocks\DI\Simple\MockController;
 use QuillStack\Mocks\DI\Simple\MockRepository;
@@ -95,5 +96,12 @@ final class InstantiableClassFactoryTest extends TestCase
         $config = $this->container->get(MockConfig::class);
 
         $this->assertEquals('config', $config->test);
+    }
+
+    public function testCreatingWithParameterWithNoType()
+    {
+        $config = $this->container->get(MockNoTypeConfig::class);
+
+        $this->assertEquals('default', $config->content);
     }
 }
