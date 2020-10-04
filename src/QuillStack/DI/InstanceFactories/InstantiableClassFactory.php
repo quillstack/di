@@ -164,14 +164,19 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
      * Create the instance of one parameter, if it's a class or an interface. For other parameters we try to find
      * the definition of this parameter in the Container.
      *
-     * @param string $parameterClassName
-     * @param string $parameterName
+     * @param $parameter
      *
      * @return mixed
      */
     private function createParameter($parameter)
     {
-        $parameterClassName = $parameter->getType()->getName();
+        $parameterType = $parameter->getType();
+
+        if (!$parameterType) {
+            return $this->createDefaultIfOptional($parameter);
+        }
+
+        $parameterClassName = $parameterType->getName();
         $parameterName = $parameter->getName();
 
         if (class_exists($parameterClassName) || interface_exists($parameterClassName)) {
@@ -181,10 +186,20 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
         try {
             return $this->createParameterFromConfig($parameterName);
         } catch (ParameterDefinitionNotFoundException $exception) {
-            return $parameter->isOptional()
-                ? $parameter->getDefaultValue()
-                : $this->createParameterFromConfig($parameterName);
+            return $this->createDefaultIfOptional($parameter);
         }
+    }
+
+    /**
+     * @param $parameter
+     *
+     * @return mixed
+     */
+    private function createDefaultIfOptional($parameter)
+    {
+        return $parameter->isOptional()
+            ? $parameter->getDefaultValue()
+            : $this->createParameterFromConfig($parameter->getName());
     }
 
     /**
