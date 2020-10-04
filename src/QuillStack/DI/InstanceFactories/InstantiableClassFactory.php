@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace QuillStack\DI\InstanceFactories;
 
 use QuillStack\DI\Container;
+use QuillStack\DI\Exceptions\ParameterDefinitionNotFoundException;
 use QuillStack\DI\InstanceFactoryInterface;
 use ReflectionClass;
 use ReflectionException;
@@ -146,19 +147,14 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
      * Creates the instance of the class and creates the instances from the parameters, if it's required.
      *
      * @param string $id
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return mixed
      */
     private function createInstanceWithParameters(string $id, array $parameters)
     {
         foreach ($parameters as $index => $parameter) {
-            $parameters[$index] = $parameter->isOptional()
-                ? $parameter->getDefaultValue()
-                : $this->createParameter(
-                    $parameter->getType()->getName(),
-                    $parameter->getName()
-                );
+            $parameters[$index] = $this->createParameter($parameter);
         }
 
         return new $id(...$parameters);
@@ -173,12 +169,31 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
      *
      * @return mixed
      */
-    private function createParameter(string $parameterClassName, string $parameterName)
+    private function createParameter($parameter)
     {
+        $parameterClassName = $parameter->getType()->getName();
+        $parameterName = $parameter->getName();
+
         if (class_exists($parameterClassName) || interface_exists($parameterClassName)) {
             return $this->container->get($parameterClassName);
         }
 
+        try {
+            return $this->createParameterFromConfig($parameterName);
+        } catch (ParameterDefinitionNotFoundException $exception) {
+            return $parameter->isOptional()
+                ? $parameter->getDefaultValue()
+                : $this->createParameterFromConfig($parameterName);
+        }
+    }
+
+    /**
+     * @param string $parameterName
+     *
+     * @return mixed
+     */
+    private function createParameterFromConfig(string $parameterName)
+    {
         return $this->container->getParameterForClass(
             $this->class->getName(),
             $parameterName

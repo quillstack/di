@@ -9,6 +9,7 @@ use QuillStack\DI\Container;
 use QuillStack\Mocks\DI\Database\MockDatabase;
 use QuillStack\Mocks\DI\Database\MockDatabaseController;
 use QuillStack\Mocks\DI\Optional\MockOptionalController;
+use QuillStack\Mocks\DI\ParameterConfig\MockConfig;
 use QuillStack\Mocks\DI\Properties\MockProperties;
 use QuillStack\Mocks\DI\Simple\MockController;
 use QuillStack\Mocks\DI\Simple\MockRepository;
@@ -33,6 +34,9 @@ final class InstantiableClassFactoryTest extends TestCase
                 'password' => self::PASSWORD,
                 'database' => self::DATABASE,
             ],
+            MockConfig::class => [
+                'test' => 'config',
+            ]
         ]);
     }
 
@@ -84,5 +88,12 @@ final class InstantiableClassFactoryTest extends TestCase
         $properties = $this->container->get(MockProperties::class);
 
         $this->assertInstanceOf(MockDatabase::class, $properties->getDatabase());
+    }
+
+    public function testCreatingWithConfig()
+    {
+        $config = $this->container->get(MockConfig::class);
+
+        $this->assertEquals('config', $config->test);
     }
 }
