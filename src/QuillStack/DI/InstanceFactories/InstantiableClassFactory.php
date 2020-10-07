@@ -177,7 +177,6 @@ final class InstantiableClassFactory implements InstanceFactoryInterface
         }
 
         $parameterClassName = $parameterType->getName();
-        $parameterName = $parameter->getName();
 
         if (class_exists($parameterClassName) || interface_exists($parameterClassName)) {
             return $this->container->get($parameterClassName);
