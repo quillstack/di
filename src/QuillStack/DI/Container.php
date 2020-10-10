@@ -129,4 +129,44 @@ final class Container implements ContainerInterface
 
         return $this->config[$className][$parameterName];
     }
+
+    /**
+     * @param string $classNameOrInterface
+     *
+     * @return string|null
+     */
+    public function getCustomFactoryClassName(string $classNameOrInterface): ?string
+    {
+        if (isset($this->config[$classNameOrInterface])) {
+            return null;
+        }
+
+        if (!class_exists($classNameOrInterface) && !interface_exists($classNameOrInterface)) {
+            return null;
+        }
+
+        $interfaces = class_implements($classNameOrInterface);
+        $configKeys = array_keys($this->config);
+
+        foreach ($interfaces as $interface) {
+            if (false === ($key = array_search($interface, $configKeys, true))) {
+                continue;
+            }
+
+            if ($configKeys[$key] !== $interface) {
+                continue;
+            }
+
+            $potentialClassFactory = $this->config[$interface];
+            $potentialClassFactoryInterfaces = class_implements($potentialClassFactory);
+
+            foreach ($potentialClassFactoryInterfaces as $potentialClassFactoryInterface) {
+                if ($potentialClassFactoryInterface === CustomFactoryInterface::class) {
+                    return $potentialClassFactory;
+                }
+            }
+        }
+
+        return null;
+    }
 }

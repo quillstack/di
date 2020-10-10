@@ -30,6 +30,13 @@ final class InstanceFactory implements InstanceFactoryInterface
     private static ?InstantiableClassFactory $instantiableClassFactory = null;
 
     /**
+     * Cache for custom factories.
+     *
+     * @var array
+     */
+    private static array $customFactories = [];
+
+    /**
      * The container instance.
      *
      * @var Container
@@ -51,7 +58,7 @@ final class InstanceFactory implements InstanceFactoryInterface
      *
      * @return InstantiableClassFactory|null
      */
-    public static function instantiableClassFactory()
+    public static function instantiableClassFactory(): ?InstantiableClassFactory
     {
         if (!static::$instantiableClassFactory) {
             static::$instantiableClassFactory = new InstantiableClassFactory();
@@ -65,7 +72,7 @@ final class InstanceFactory implements InstanceFactoryInterface
      *
      * @return ClassFromInterfaceFactory|null
      */
-    public static function classFromInterfaceFactory()
+    public static function classFromInterfaceFactory(): ?ClassFromInterfaceFactory
     {
         if (!static::$classFromInterfaceFactory) {
             static::$classFromInterfaceFactory = new ClassFromInterfaceFactory();
@@ -75,16 +82,35 @@ final class InstanceFactory implements InstanceFactoryInterface
     }
 
     /**
+     * Initialise cache for the custom factory.
+     *
+     * @param string $customFactoryClassName
+     *
+     * @return CustomFactoryInterface|null
+     */
+    public static function classFromCustomFactory(string $customFactoryClassName): ?CustomFactoryInterface
+    {
+        if (!isset(static::$customFactories[$customFactoryClassName])) {
+            static::$customFactories[$customFactoryClassName] = new $customFactoryClassName();
+        }
+
+        return static::$customFactories[$customFactoryClassName];
+    }
+
+    /**
      * Creates a new instance.
      *
      * @param string $id
      *
      * @throws ReflectionException
-     *
      * @return mixed
      */
     public function create(string $id)
     {
+        if ($customFactoryClassName = $this->container->getCustomFactoryClassName($id)) {
+            return $this->createFromCustomFactory($id, $customFactoryClassName);
+        }
+
         $class = new ReflectionClass($id);
 
         if ($class->isInstantiable()) {
@@ -99,12 +125,28 @@ final class InstanceFactory implements InstanceFactoryInterface
     }
 
     /**
+     * Create an instance from the custom factory.
+     *
+     * @param string $id
+     * @param string $customFactoryClassName
+     *
+     * @return mixed
+     */
+    private function createFromCustomFactory(string $id, string $customFactoryClassName)
+    {
+        return static::classFromCustomFactory($customFactoryClassName)
+            ->setContainer($this->container)
+            ->create($id);
+    }
+
+    /**
      * Create an instance of the instantiable class.
      *
-     * @param string          $id
+     * @param string $id
      * @param ReflectionClass $class
      *
      * @return mixed
+     * @throws ReflectionException
      */
     private function createInstantiable(string $id, ReflectionClass $class)
     {

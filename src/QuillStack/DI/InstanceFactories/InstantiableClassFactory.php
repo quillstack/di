@@ -6,7 +6,7 @@ namespace QuillStack\DI\InstanceFactories;
 
 use QuillStack\DI\Container;
 use QuillStack\DI\Exceptions\ParameterDefinitionNotFoundException;
-use QuillStack\DI\InstanceFactoryInterface;
+use QuillStack\DI\InstanceFactoryWithContainerInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -15,7 +15,7 @@ use ReflectionProperty;
 /**
  * The factory for classes.
  */
-final class InstantiableClassFactory implements InstanceFactoryInterface
+final class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
 {
     /**
      * The instance of the Reflection class to find out all parameters we need to create before we initialise

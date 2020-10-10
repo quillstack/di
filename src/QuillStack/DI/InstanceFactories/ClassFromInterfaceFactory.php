@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace QuillStack\DI\InstanceFactories;
 
 use QuillStack\DI\Container;
-use QuillStack\DI\InstanceFactoryInterface;
+use QuillStack\DI\InstanceFactoryWithContainerInterface;
 
 /**
  * The factory creates the instance of the class based on the interface. It requires the interface and the class
  * chosen for this interface are set in the DI Container configuration.
  */
-final class ClassFromInterfaceFactory implements InstanceFactoryInterface
+final class ClassFromInterfaceFactory implements InstanceFactoryWithContainerInterface
 {
     /**
      * The instance of Container class.
