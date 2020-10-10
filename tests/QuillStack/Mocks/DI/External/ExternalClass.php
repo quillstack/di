@@ -6,5 +6,4 @@ namespace QuillStack\Mocks\DI\External;
 
 final class ExternalClass
 {
-
 }

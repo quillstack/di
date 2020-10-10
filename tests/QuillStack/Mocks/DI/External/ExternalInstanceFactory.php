@@ -17,7 +17,7 @@ final class ExternalInstanceFactory implements CustomFactoryInterface
 
     public function create(string $id)
     {
-        $external = new $id;
+        $external = new $id();
         $external->test = 'test';
 
         return $external;
