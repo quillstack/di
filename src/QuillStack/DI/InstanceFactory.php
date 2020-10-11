@@ -60,11 +60,11 @@ final class InstanceFactory implements InstanceFactoryInterface
      */
     public static function instantiableClassFactory(): ?InstantiableClassFactory
     {
-        if (!static::$instantiableClassFactory) {
-            static::$instantiableClassFactory = new InstantiableClassFactory();
+        if (!self::$instantiableClassFactory) {
+            self::$instantiableClassFactory = new InstantiableClassFactory();
         }
 
-        return static::$instantiableClassFactory;
+        return self::$instantiableClassFactory;
     }
 
     /**
@@ -74,11 +74,11 @@ final class InstanceFactory implements InstanceFactoryInterface
      */
     public static function classFromInterfaceFactory(): ?ClassFromInterfaceFactory
     {
-        if (!static::$classFromInterfaceFactory) {
-            static::$classFromInterfaceFactory = new ClassFromInterfaceFactory();
+        if (!self::$classFromInterfaceFactory) {
+            self::$classFromInterfaceFactory = new ClassFromInterfaceFactory();
         }
 
-        return static::$classFromInterfaceFactory;
+        return self::$classFromInterfaceFactory;
     }
 
     /**
@@ -90,11 +90,11 @@ final class InstanceFactory implements InstanceFactoryInterface
      */
     public static function classFromCustomFactory(string $customFactoryClassName): ?CustomFactoryInterface
     {
-        if (!isset(static::$customFactories[$customFactoryClassName])) {
-            static::$customFactories[$customFactoryClassName] = new $customFactoryClassName();
+        if (!isset(self::$customFactories[$customFactoryClassName])) {
+            self::$customFactories[$customFactoryClassName] = new $customFactoryClassName();
         }
 
-        return static::$customFactories[$customFactoryClassName];
+        return self::$customFactories[$customFactoryClassName];
     }
 
     /**
@@ -134,7 +134,7 @@ final class InstanceFactory implements InstanceFactoryInterface
      */
     private function createFromCustomFactory(string $id, string $customFactoryClassName)
     {
-        return static::classFromCustomFactory($customFactoryClassName)
+        return self::classFromCustomFactory($customFactoryClassName)
             ->setContainer($this->container)
             ->create($id);
     }
@@ -150,7 +150,7 @@ final class InstanceFactory implements InstanceFactoryInterface
      */
     private function createInstantiable(string $id, ReflectionClass $class)
     {
-        return static::instantiableClassFactory()
+        return self::instantiableClassFactory()
             ->setContainer($this->container)
             ->setClass($class)
             ->create($id);
@@ -165,7 +165,7 @@ final class InstanceFactory implements InstanceFactoryInterface
      */
     private function createFromInterface(string $id)
     {
-        return static::classFromInterfaceFactory()
+        return self::classFromInterfaceFactory()
             ->setContainer($this->container)
             ->create($id);
     }
