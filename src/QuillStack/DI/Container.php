@@ -137,12 +137,12 @@ final class Container implements ContainerInterface
      */
     public function getCustomFactoryClassName(string $classNameOrInterface): ?string
     {
-        if (isset($this->config[$classNameOrInterface])) {
+        if (!class_exists($classNameOrInterface) && !interface_exists($classNameOrInterface)) {
             return null;
         }
 
-        if (!class_exists($classNameOrInterface) && !interface_exists($classNameOrInterface)) {
-            return null;
+        if (isset($this->config[$classNameOrInterface])) {
+            return $this->getPotentialClassFactory($classNameOrInterface);
         }
 
         $interfaces = class_implements($classNameOrInterface);
@@ -157,13 +157,32 @@ final class Container implements ContainerInterface
                 continue;
             }
 
-            $potentialClassFactory = $this->config[$interface];
-            $potentialClassFactoryInterfaces = class_implements($potentialClassFactory);
+            if ($potentialClassFactory = $this->getPotentialClassFactory($interface)) {
+                return $potentialClassFactory;
+            }
+        }
 
-            foreach ($potentialClassFactoryInterfaces as $potentialClassFactoryInterface) {
-                if ($potentialClassFactoryInterface === CustomFactoryInterface::class) {
-                    return $potentialClassFactory;
-                }
+        return null;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return string|null
+     */
+    private function getPotentialClassFactory(string $id): ?string
+    {
+        $class = $this->config[$id];
+
+        if (!is_string($class) || !class_exists($class) && !interface_exists($class)) {
+            return null;
+        }
+
+        $potentialClassFactoryInterfaces = class_implements($class);
+
+        foreach ($potentialClassFactoryInterfaces as $potentialClassFactoryInterface) {
+            if ($potentialClassFactoryInterface === CustomFactoryInterface::class) {
+                return $class;
             }
         }
 
