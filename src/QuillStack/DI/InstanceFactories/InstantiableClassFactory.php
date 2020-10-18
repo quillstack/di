@@ -11,6 +11,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
+use TypeError;
 
 /**
  * The factory for classes.
@@ -161,7 +162,13 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
             $parameters[$index] = $this->createParameter($parameter);
         }
 
-        return new $id(...$parameters);
+        try {
+            return new $id(...$parameters);
+        } catch (TypeError $exception) {
+            throw new ParameterDefinitionNotFoundException(
+                $exception->getMessage()
+            );
+        }
     }
 
     /**
