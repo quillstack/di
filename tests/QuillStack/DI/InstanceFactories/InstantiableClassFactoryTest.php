@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 use QuillStack\DI\Container;
 use QuillStack\Mocks\DI\Database\MockDatabase;
 use QuillStack\Mocks\DI\Database\MockDatabaseController;
+use QuillStack\Mocks\DI\FirstConfig\MockFirstFactory;
+use QuillStack\Mocks\DI\FirstConfig\MockNoConfigForFactory;
 use QuillStack\Mocks\DI\Optional\MockOptionalController;
 use QuillStack\Mocks\DI\ParameterConfig\MockConfig;
 use QuillStack\Mocks\DI\ParameterConfig\MockNoTypeConfig;
@@ -37,8 +39,18 @@ final class InstantiableClassFactoryTest extends TestCase
             ],
             MockConfig::class => [
                 'test' => 'config',
-            ]
+            ],
+            MockFirstFactory::class => [
+                'level' => 0,
+            ],
         ]);
+    }
+
+    public function testCreatingWithParameterWithNoType()
+    {
+        $config = $this->container->get(MockNoTypeConfig::class);
+
+        $this->assertEquals('default', $config->content);
     }
 
     public function testSettingContainer()
@@ -98,10 +110,12 @@ final class InstantiableClassFactoryTest extends TestCase
         $this->assertEquals('config', $config->test);
     }
 
-    public function testCreatingWithParameterWithNoType()
+    public function testFirstConfigThenDefaultValue()
     {
-        $config = $this->container->get(MockNoTypeConfig::class);
+        $factory = $this->container->get(MockFirstFactory::class);
+        $factoryNoConfig  = $this->container->get(MockNoConfigForFactory::class);
 
-        $this->assertEquals('default', $config->content);
+        $this->assertEquals(0, $factory->level);
+        $this->assertEquals(300, $factoryNoConfig->level);
     }
 }

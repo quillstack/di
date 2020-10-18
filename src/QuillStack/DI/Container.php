@@ -122,9 +122,7 @@ final class Container implements ContainerInterface
     public function getParameterForClass(string $className, string $parameterName)
     {
         if (!isset($this->config[$className][$parameterName])) {
-            $message = "Parameter definition `{$parameterName}` for class `{$className}` not found";
-
-            throw new ParameterDefinitionNotFoundException($message);
+            return null;
         }
 
         return $this->config[$className][$parameterName];

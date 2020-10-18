@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace QuillStack\Mocks\DI\ParameterConfig;
 
-use PHPUnit\Framework\TestCase;
-
 final class MockConfig
 {
     public string $test;

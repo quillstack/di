@@ -131,12 +131,16 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
                 continue;
             }
 
-            if ($value) {
+            $valueFromConfig = $this->createParameterFromConfig($name);
+
+            if (class_exists($type) || interface_exists($type)) {
+                $object->$name = $this->container->get($type);
+            } elseif (isset($valueFromConfig)) {
+                $object->$name = $valueFromConfig;
+            } elseif ($value) {
                 $object->$name = $value;
             } elseif ($property->getType()->allowsNull()) {
                 $object->$name = null;
-            } elseif (class_exists($type) || interface_exists($type)) {
-                $object->$name = $this->container->get($type);
             }
         }
 
@@ -205,12 +209,13 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
     private function createFromConfigOrGetDefault($parameter)
     {
         $parameterName = $parameter->getName();
+        $value = $this->createParameterFromConfig($parameterName);
 
-        try {
-            return $this->createParameterFromConfig($parameterName);
-        } catch (ParameterDefinitionNotFoundException $exception) {
-            return $this->createDefaultIfOptional($parameter);
+        if ($value !== null) {
+            return $value;
         }
+
+        return $this->createDefaultIfOptional($parameter);
     }
 
     /**
