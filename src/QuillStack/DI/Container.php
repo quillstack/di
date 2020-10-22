@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace QuillStack\DI;
 
 use Psr\Container\ContainerInterface;
+use QuillStack\DI\Exceptions\ContainerNotInitialisedException;
 use QuillStack\DI\Exceptions\IncorrectClassTypeException;
 use QuillStack\DI\Exceptions\ClassNotFoundForInterfaceException;
 use QuillStack\DI\Exceptions\InterfaceDefinitionNotFoundException;
@@ -39,6 +40,11 @@ final class Container implements ContainerInterface
     private array $config;
 
     /**
+     * @var Container
+     */
+    private static Container $instance;
+
+    /**
      * Container constructor.
      *
      * @param array $config
@@ -47,6 +53,7 @@ final class Container implements ContainerInterface
     {
         $this->config = $config;
         $this->instanceFactory = new InstanceFactory($this);
+        static::$instance = $this;
     }
 
     /**
@@ -83,6 +90,8 @@ final class Container implements ContainerInterface
 
             throw new UnableToCreateReflectionClassException($message, 500, $exception);
         }
+
+        static::$instance = $this;
     }
 
     /**
@@ -185,5 +194,17 @@ final class Container implements ContainerInterface
         }
 
         return null;
+    }
+
+    /**
+     * @return Container
+     */
+    public static function getInstance(): Container
+    {
+        if (!isset(static::$instance)) {
+            throw new ContainerNotInitialisedException('Container not initilised');
+        }
+
+        return static::$instance;
     }
 }
