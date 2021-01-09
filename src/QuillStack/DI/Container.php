@@ -65,6 +65,10 @@ final class Container implements ContainerInterface
      */
     public function get($id)
     {
+        if ($id === Container::class) {
+            return $this;
+        }
+
         if (!isset($this->instances[$id])) {
             $this->createNewInstance($id);
         }

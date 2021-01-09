@@ -4,6 +4,7 @@ namespace QuillStack\DI;
 
 use PHPUnit\Framework\TestCase;
 use QuillStack\DI\Exceptions\UnableToCreateReflectionClassException;
+use QuillStack\Mocks\DI\ContainerItself\MockFactory;
 use QuillStack\Mocks\DI\Database\MockDatabase;
 use QuillStack\Mocks\DI\Simple\MockController;
 
@@ -31,5 +32,14 @@ final class ContainerTest extends TestCase
         $this->expectException(UnableToCreateReflectionClassException::class);
 
         $this->container->get('UnknownClass');
+    }
+
+    public function testContainerItself()
+    {
+        $mockFactory = $this->container->get(MockFactory::class);
+        $controller = $mockFactory->getController();
+
+        $this->assertInstanceOf(MockController::class, $controller);
+        $this->assertSame($this->container, $mockFactory->container);
     }
 }
