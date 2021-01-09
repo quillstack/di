@@ -31,7 +31,8 @@ final class InstanceFactory implements InstanceFactoryInterface
         private Container $container,
         private InstantiableClassFactory $instantiableClassFactory,
         private ClassFromInterfaceFactory $classFromInterfaceFactory
-    ) {}
+    ) {
+    }
 
     /**
      * Initialise cache for the custom factory.

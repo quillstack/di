@@ -9,5 +9,6 @@ final class MockDatabase
         public string $user,
         public string $password,
         public string $database
-    ) {}
+    ) {
+    }
 }
