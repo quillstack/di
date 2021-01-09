@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    di_php:
+        container_name: di_php
+        build:
+            context: ./docker/php
+        volumes:
+            - .:/home/quillstack/di
+        tty: true
+        stdin_open: true

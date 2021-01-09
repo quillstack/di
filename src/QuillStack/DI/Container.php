@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace QuillStack\DI;
 
 use Psr\Container\ContainerInterface;
@@ -9,8 +7,9 @@ use QuillStack\DI\Exceptions\ContainerNotInitialisedException;
 use QuillStack\DI\Exceptions\IncorrectClassTypeException;
 use QuillStack\DI\Exceptions\ClassNotFoundForInterfaceException;
 use QuillStack\DI\Exceptions\InterfaceDefinitionNotFoundException;
-use QuillStack\DI\Exceptions\ParameterDefinitionNotFoundException;
 use QuillStack\DI\Exceptions\UnableToCreateReflectionClassException;
+use QuillStack\DI\InstanceFactories\ClassFromInterfaceFactory;
+use QuillStack\DI\InstanceFactories\InstantiableClassFactory;
 use ReflectionException;
 
 /**
@@ -23,7 +22,7 @@ final class Container implements ContainerInterface
      *
      * @var array
      */
-    private array $instances;
+    private array $instances = [];
 
     /**
      * Instance factory to create new instances.
@@ -52,8 +51,13 @@ final class Container implements ContainerInterface
     public function __construct(array $config = [])
     {
         $this->config = $config;
-        $this->instanceFactory = new InstanceFactory($this);
-        static::$instance = $this;
+        $this->instanceFactory = new InstanceFactory(
+            $this,
+            new InstantiableClassFactory(),
+            new ClassFromInterfaceFactory()
+        );
+
+        Container::$instance = $this;
     }
 
     /**
@@ -81,7 +85,7 @@ final class Container implements ContainerInterface
      *
      * @param $id
      */
-    private function createNewInstance($id): void
+    private function createNewInstance(string $id): void
     {
         try {
             $this->instances[$id] = $this->instanceFactory->create($id);
@@ -91,7 +95,7 @@ final class Container implements ContainerInterface
             throw new UnableToCreateReflectionClassException($message, 500, $exception);
         }
 
-        static::$instance = $this;
+        Container::$instance = $this;
     }
 
     /**
@@ -99,25 +103,25 @@ final class Container implements ContainerInterface
      *
      * @param string $interface
      *
-     * @return mixed
+     * @return string
      */
-    public function getInstantiableClassForInterface(string $interface)
+    public function getInstantiableClassForInterface(string $interface): string
     {
         if (!isset($this->config[$interface])) {
             throw new InterfaceDefinitionNotFoundException("Interface definition `{$interface}` not found");
         }
 
-        $class = $this->config[$interface];
+        $className = $this->config[$interface];
 
-        if (!is_string($class)) {
+        if (!is_string($className)) {
             throw new IncorrectClassTypeException("Incorrect class type for interface `{$interface}`");
         }
 
-        if (!class_exists($class)) {
+        if (!class_exists($className)) {
             throw new ClassNotFoundForInterfaceException("Class not found for interface `{$interface}`");
         }
 
-        return $class;
+        return $className;
     }
 
     /**
@@ -128,7 +132,7 @@ final class Container implements ContainerInterface
      *
      * @return mixed
      */
-    public function getParameterForClass(string $className, string $parameterName)
+    public function getParameterForClass(string $className, string $parameterName): mixed
     {
         if (!isset($this->config[$className][$parameterName])) {
             return null;
@@ -201,10 +205,10 @@ final class Container implements ContainerInterface
      */
     public static function getInstance(): Container
     {
-        if (!isset(static::$instance)) {
-            throw new ContainerNotInitialisedException('Container not initilised');
+        if (!isset(Container::$instance)) {
+            throw new ContainerNotInitialisedException('Container not initialised');
         }
 
-        return static::$instance;
+        return Container::$instance;
     }
 }

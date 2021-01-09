@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace QuillStack\DI;
 
 interface InstanceFactoryInterface
@@ -12,7 +10,7 @@ interface InstanceFactoryInterface
      * @param string $id
      * @codeCoverageIgnore
      *
-     * @return mixed
+     * @return object
      */
-    public function create(string $id);
+    public function create(string $id): object;
 }

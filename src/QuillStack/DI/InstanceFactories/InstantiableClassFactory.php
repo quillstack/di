@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace QuillStack\DI\InstanceFactories;
 
+use JetBrains\PhpStorm\ArrayShape;
 use QuillStack\DI\Container;
 use QuillStack\DI\Exceptions\ParameterDefinitionNotFoundException;
 use QuillStack\DI\InstanceFactoryWithContainerInterface;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
 use TypeError;
@@ -83,10 +81,8 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
 
     /**
      * {@inheritdoc}
-     *
-     * @throws ReflectionException
      */
-    public function create(string $id)
+    public function create(string $id): object
     {
         $constructor = $this->class->getConstructor();
         $object = $this->createObjectWithParameters($id, $constructor);
@@ -101,8 +97,8 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
      * @param $object
      *
      * @return array
-     * @throws ReflectionException
      */
+    #[ArrayShape(['properties' => "\ReflectionProperty[]", 'defaults' => "mixed[]"])]
     private function getProperties($object): array
     {
         $reflect = new ReflectionClass($object);
@@ -154,9 +150,9 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
      * @param string $id
      * @param array $parameters
      *
-     * @return mixed
+     * @return object
      */
-    private function createInstanceWithParameters(string $id, array $parameters)
+    private function createInstanceWithParameters(string $id, array $parameters): object
     {
         foreach ($parameters as $index => $parameter) {
             $parameters[$index] = $this->createParameter($parameter);
@@ -179,7 +175,7 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
      *
      * @return mixed
      */
-    private function createParameter($parameter)
+    private function createParameter($parameter): mixed
     {
         $parameterType = $parameter->getType();
 
@@ -201,7 +197,7 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
      *
      * @return mixed
      */
-    private function createDefaultIfOptional($parameter)
+    private function createDefaultIfOptional($parameter): mixed
     {
         return $parameter->isOptional()
             ? $parameter->getDefaultValue()
@@ -213,7 +209,7 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
      *
      * @return mixed
      */
-    private function createFromConfigOrGetDefault($parameter)
+    private function createFromConfigOrGetDefault($parameter): mixed
     {
         $parameterName = $parameter->getName();
         $value = $this->createParameterFromConfig($parameterName);
@@ -230,7 +226,7 @@ final class InstantiableClassFactory implements InstanceFactoryWithContainerInte
      *
      * @return mixed
      */
-    private function createParameterFromConfig(string $parameterName)
+    private function createParameterFromConfig(string $parameterName): mixed
     {
         return $this->container->getParameterForClass(
             $this->class->getName(),

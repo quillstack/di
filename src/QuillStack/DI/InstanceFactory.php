@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace QuillStack\DI;
 
 use QuillStack\DI\Exceptions\UnresolvableParameterTypeException;
@@ -16,70 +14,24 @@ use ReflectionException;
 final class InstanceFactory implements InstanceFactoryInterface
 {
     /**
-     * Cache for the factory instance to create objects from interface.
-     *
-     * @var ClassFromInterfaceFactory|null
-     */
-    private static ?ClassFromInterfaceFactory $classFromInterfaceFactory = null;
-
-    /**
-     * Cache for the factory instance to instances of instantiable classes.
-     *
-     * @var InstantiableClassFactory|null
-     */
-    private static ?InstantiableClassFactory $instantiableClassFactory = null;
-
-    /**
      * Cache for custom factories.
      *
      * @var array
      */
-    private static array $customFactories = [];
-
-    /**
-     * The container instance.
-     *
-     * @var Container
-     */
-    private Container $container;
+    private array $customFactories = [];
 
     /**
      * InstanceFactory constructor.
      *
      * @param Container $container
+     * @param InstantiableClassFactory  $instantiableClassFactory
+     * @param ClassFromInterfaceFactory $classFromInterfaceFactory
      */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * Initialise cache for the factory instance to instances of instantiable classes.
-     *
-     * @return InstantiableClassFactory|null
-     */
-    public static function instantiableClassFactory(): ?InstantiableClassFactory
-    {
-        if (!self::$instantiableClassFactory) {
-            self::$instantiableClassFactory = new InstantiableClassFactory();
-        }
-
-        return self::$instantiableClassFactory;
-    }
-
-    /**
-     * Initialise cache for the factory instance to create objects from interface.
-     *
-     * @return ClassFromInterfaceFactory|null
-     */
-    public static function classFromInterfaceFactory(): ?ClassFromInterfaceFactory
-    {
-        if (!self::$classFromInterfaceFactory) {
-            self::$classFromInterfaceFactory = new ClassFromInterfaceFactory();
-        }
-
-        return self::$classFromInterfaceFactory;
-    }
+    public function __construct(
+        private Container $container,
+        private InstantiableClassFactory $instantiableClassFactory,
+        private ClassFromInterfaceFactory $classFromInterfaceFactory
+    ) {}
 
     /**
      * Initialise cache for the custom factory.
@@ -88,13 +40,13 @@ final class InstanceFactory implements InstanceFactoryInterface
      *
      * @return CustomFactoryInterface|null
      */
-    public static function classFromCustomFactory(string $customFactoryClassName): ?CustomFactoryInterface
+    public function classFromCustomFactory(string $customFactoryClassName): ?CustomFactoryInterface
     {
-        if (!isset(self::$customFactories[$customFactoryClassName])) {
-            self::$customFactories[$customFactoryClassName] = new $customFactoryClassName();
+        if (!isset($this->customFactories[$customFactoryClassName])) {
+            $this->customFactories[$customFactoryClassName] = new $customFactoryClassName();
         }
 
-        return self::$customFactories[$customFactoryClassName];
+        return $this->customFactories[$customFactoryClassName];
     }
 
     /**
@@ -102,10 +54,10 @@ final class InstanceFactory implements InstanceFactoryInterface
      *
      * @param string $id
      *
+     * @return object
      * @throws ReflectionException
-     * @return mixed
      */
-    public function create(string $id)
+    public function create(string $id): object
     {
         if ($customFactoryClassName = $this->container->getCustomFactoryClassName($id)) {
             return $this->createFromCustomFactory($id, $customFactoryClassName);
@@ -130,11 +82,11 @@ final class InstanceFactory implements InstanceFactoryInterface
      * @param string $id
      * @param string $customFactoryClassName
      *
-     * @return mixed
+     * @return object
      */
-    private function createFromCustomFactory(string $id, string $customFactoryClassName)
+    private function createFromCustomFactory(string $id, string $customFactoryClassName): object
     {
-        return self::classFromCustomFactory($customFactoryClassName)
+        return $this->classFromCustomFactory($customFactoryClassName)
             ->setContainer($this->container)
             ->create($id);
     }
@@ -142,15 +94,14 @@ final class InstanceFactory implements InstanceFactoryInterface
     /**
      * Create an instance of the instantiable class.
      *
-     * @param string $id
+     * @param string          $id
      * @param ReflectionClass $class
      *
-     * @return mixed
-     * @throws ReflectionException
+     * @return object
      */
-    private function createInstantiable(string $id, ReflectionClass $class)
+    private function createInstantiable(string $id, ReflectionClass $class): object
     {
-        return self::instantiableClassFactory()
+        return $this->instantiableClassFactory
             ->setContainer($this->container)
             ->setClass($class)
             ->create($id);
@@ -161,11 +112,11 @@ final class InstanceFactory implements InstanceFactoryInterface
      *
      * @param string $id
      *
-     * @return mixed
+     * @return object
      */
-    private function createFromInterface(string $id)
+    private function createFromInterface(string $id): object
     {
-        return self::classFromInterfaceFactory()
+        return $this->classFromInterfaceFactory
             ->setContainer($this->container)
             ->create($id);
     }

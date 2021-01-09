@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace QuillStack\DI\InstanceFactories;
 
 use QuillStack\DI\Container;
@@ -37,7 +35,7 @@ final class ClassFromInterfaceFactory implements InstanceFactoryWithContainerInt
     /**
      * {@inheritdoc}
      */
-    public function create(string $id)
+    public function create(string $id): object
     {
         return $this->container->get(
             $this->container->getInstantiableClassForInterface($id)

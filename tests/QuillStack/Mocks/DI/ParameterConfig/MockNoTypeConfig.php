@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace QuillStack\Mocks\DI\ParameterConfig;
 
 final class MockNoTypeConfig
