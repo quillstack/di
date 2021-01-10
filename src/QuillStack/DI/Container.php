@@ -3,6 +3,7 @@
 namespace QuillStack\DI;
 
 use Psr\Container\ContainerInterface;
+use QuillStack\DI\Exceptions\ClassLoopException;
 use QuillStack\DI\Exceptions\ContainerNotInitialisedException;
 use QuillStack\DI\Exceptions\IncorrectClassTypeException;
 use QuillStack\DI\Exceptions\ClassNotFoundForInterfaceException;
@@ -23,6 +24,13 @@ final class Container implements ContainerInterface
      * @var array
      */
     private array $instances = [];
+
+    /**
+     * Current classes stack to detect loops.
+     *
+     * @var array
+     */
+    private array $stack = [];
 
     /**
      * Instance factory to create new instances.
@@ -91,6 +99,12 @@ final class Container implements ContainerInterface
      */
     private function createNewInstance(string $id): void
     {
+        if (in_array($id, $this->stack, true)) {
+            throw new ClassLoopException("Class `{$id}` is in a loop", 500);
+        }
+
+        $this->stack[] = $id;
+
         try {
             $this->instances[$id] = $this->instanceFactory->create($id);
         } catch (ReflectionException $exception) {
