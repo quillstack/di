@@ -1,0 +1,39 @@
+{
+    "name": "quillstack/di",
+    "description": "The dependency injection container based on PSR-11: Container interface, and with the main goal: to be fast.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "dependency-injection",
+        "container",
+        "di",
+        "di-container",
+        "psr-11",
+        "php8",
+        "class",
+        "properties",
+        "property",
+        "constructor"
+    ],
+    "homepage": "https://quillstack.com/di",
+    "authors": [
+        {
+            "name": "Radek Ziemniewicz",
+            "email": "open-source@quillstack.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "psr/container": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "QuillStack\\DI\\": "src/",
+            "QuillStack\\Tests\\DI\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.2",
+        "phpunit/phpunit": "^9"
+    }
+}
