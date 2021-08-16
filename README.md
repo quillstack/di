@@ -1,5 +1,11 @@
 # QuillStack DI Container
 
+[![StyleCI](https://github.styleci.io/repos/291464853/shield?branch=main)](https://github.styleci.io/repos/291464853?branch=main)
+[![CodeFactor](https://www.codefactor.io/repository/github/quillstack/di/badge)](https://www.codefactor.io/repository/github/quillstack/di)
+[![Downloads](https://img.shields.io/packagist/dt/quillstack/di.svg)](https://packagist.org/packages/quillstack/di)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/quillstack/di)
+![Packagist License](https://img.shields.io/packagist/l/quillstack/di)
+
 QuillStack DI Container is the dependency injection container based
 on _PSR-11: Container interface_, and with the main goal: to be fast.
 You can find the full documentation on the website: \
