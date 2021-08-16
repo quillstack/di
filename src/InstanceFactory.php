@@ -1,10 +1,10 @@
 <?php
 
-namespace QuillStack\DI;
+namespace Quillstack\DI;
 
-use QuillStack\DI\Exceptions\UnresolvableParameterTypeException;
-use QuillStack\DI\InstanceFactories\ClassFromInterfaceFactory;
-use QuillStack\DI\InstanceFactories\InstantiableClassFactory;
+use Quillstack\DI\Exceptions\UnresolvableParameterTypeException;
+use Quillstack\DI\InstanceFactories\ClassFromInterfaceFactory;
+use Quillstack\DI\InstanceFactories\InstantiableClassFactory;
 use ReflectionClass;
 use ReflectionException;
 

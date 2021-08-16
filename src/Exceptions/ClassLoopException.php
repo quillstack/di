@@ -1,7 +1,8 @@
 <?php
 
-namespace QuillStack\DI\Exceptions;
+namespace Quillstack\DI\Exceptions;
 
 final class ClassLoopException extends ContainerException
 {
+    //
 }

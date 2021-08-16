@@ -1,6 +1,6 @@
 <?php
 
-use QuillStack\DI\Container;
+use Quillstack\DI\Container;
 
 if (!function_exists('container')) {
     /**

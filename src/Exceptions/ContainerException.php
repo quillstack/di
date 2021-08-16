@@ -1,6 +1,6 @@
 <?php
 
-namespace QuillStack\DI\Exceptions;
+namespace Quillstack\DI\Exceptions;
 
 use Psr\Container\ContainerExceptionInterface;
 use RuntimeException;

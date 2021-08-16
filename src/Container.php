@@ -1,16 +1,16 @@
 <?php
 
-namespace QuillStack\DI;
+namespace Quillstack\DI;
 
 use Psr\Container\ContainerInterface;
-use QuillStack\DI\Exceptions\ClassLoopException;
-use QuillStack\DI\Exceptions\ContainerNotInitialisedException;
-use QuillStack\DI\Exceptions\IncorrectClassTypeException;
-use QuillStack\DI\Exceptions\ClassNotFoundForInterfaceException;
-use QuillStack\DI\Exceptions\InterfaceDefinitionNotFoundException;
-use QuillStack\DI\Exceptions\UnableToCreateReflectionClassException;
-use QuillStack\DI\InstanceFactories\ClassFromInterfaceFactory;
-use QuillStack\DI\InstanceFactories\InstantiableClassFactory;
+use Quillstack\DI\Exceptions\ClassLoopException;
+use Quillstack\DI\Exceptions\ContainerNotInitialisedException;
+use Quillstack\DI\Exceptions\IncorrectClassTypeException;
+use Quillstack\DI\Exceptions\ClassNotFoundForInterfaceException;
+use Quillstack\DI\Exceptions\InterfaceDefinitionNotFoundException;
+use Quillstack\DI\Exceptions\UnableToCreateReflectionClassException;
+use Quillstack\DI\InstanceFactories\ClassFromInterfaceFactory;
+use Quillstack\DI\InstanceFactories\InstantiableClassFactory;
 use ReflectionException;
 
 /**
