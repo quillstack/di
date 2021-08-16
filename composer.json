@@ -1,6 +1,5 @@
 {
-    "name": "quillstack/di",
-    "description": "The dependency injection container based on PSR-11: Container interface, and with the main goal: to be fast.",
+    "description": "The dependency injection container based on PSR-11: Container interface.",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -19,7 +18,7 @@
     "authors": [
         {
             "name": "Radek Ziemniewicz",
-            "email": "open-source@quillstack.com"
+            "email": "radek@quillstack.org"
         }
     ],
     "require": {
@@ -27,9 +26,13 @@
         "psr/container": "^1.0"
     },
     "autoload": {
+        "files": [
+            "src/container.helper.php"
+        ],
         "psr-4": {
             "QuillStack\\DI\\": "src/",
-            "QuillStack\\Tests\\DI\\": "tests/"
+            "QuillStack\\Tests\\DI\\": "tests/",
+            "QuillStack\\Mocks\\DI\\": "tests/QuillStack/Mocks/DI/"
         }
     },
     "require-dev": {
