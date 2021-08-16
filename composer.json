@@ -1,4 +1,5 @@
 {
+    "name": "quillstack/di",
     "description": "The dependency injection container based on PSR-11: Container interface.",
     "type": "library",
     "license": "MIT",
