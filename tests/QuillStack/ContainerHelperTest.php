@@ -13,13 +13,13 @@ final class ContainerHelperTest extends TestCase
     {
         $this->expectException(ContainerNotInitialisedException::class);
 
-        container();
+        \container();
     }
 
     public function testEmpty()
     {
         new Container();
-        $container = container();
+        $container = \container();
 
         $this->assertInstanceOf(Container::class, $container);
         $this->assertFalse($container->has(MockConfig::class));
@@ -27,7 +27,7 @@ final class ContainerHelperTest extends TestCase
 
     public function testHelper()
     {
-        $container = container();
+        $container = \container();
         $config = $container->get(MockConfig::class);
 
         $this->assertTrue($container->has(MockConfig::class));

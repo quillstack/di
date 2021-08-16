@@ -26,9 +26,13 @@
         "psr/container": "^1.0"
     },
     "autoload": {
+        "files": [
+            "src/container.helper.php"
+        ],
         "psr-4": {
             "QuillStack\\DI\\": "src/",
-            "QuillStack\\Tests\\DI\\": "tests/"
+            "QuillStack\\Tests\\DI\\": "tests/",
+            "QuillStack\\Mocks\\DI\\": "tests/QuillStack/Mocks/DI/"
         }
     },
     "require-dev": {
