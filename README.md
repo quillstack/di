@@ -1,16 +1,16 @@
 # Quillstack DI Container
 
-[![StyleCI](https://github.styleci.io/repos/291464853/shield?branch=main)](https://github.styleci.io/repos/291464853?branch=main)
-[![CodeFactor](https://www.codefactor.io/repository/github/quillstack/di/badge)](https://www.codefactor.io/repository/github/quillstack/di)
+[![Build Status](https://travis-ci.com/quillstack/di.svg?branch=main)](https://travis-ci.com/quillstack/di)
 [![Downloads](https://img.shields.io/packagist/dt/quillstack/di.svg)](https://packagist.org/packages/quillstack/di)
-![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/quillstack/di)
-![Packagist License](https://img.shields.io/packagist/l/quillstack/di)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=coverage)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=ncloc)](https://sonarcloud.io/dashboard?id=quillstack_di)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=quillstack_di)
+[![StyleCI](https://github.styleci.io/repos/291464853/shield?branch=main)](https://github.styleci.io/repos/291464853?branch=main)
+[![CodeFactor](https://www.codefactor.io/repository/github/quillstack/di/badge)](https://www.codefactor.io/repository/github/quillstack/di)
+![Packagist License](https://img.shields.io/packagist/l/quillstack/di)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=quillstack_di)
+[![Maintainability](https://api.codeclimate.com/v1/badges/d3657982e8a5bb50f4e3/maintainability)](https://codeclimate.com/github/quillstack/di/maintainability)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=security_rating)](https://sonarcloud.io/dashboard?id=quillstack_di)
-[![Build Status](https://travis-ci.com/quillstack/di.svg?branch=main)](https://travis-ci.com/quillstack/di)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/quillstack/di)
 
 Quillstack DI Container is the dependency injection container based
 on _PSR-11: Container interface_, and with the main goal: to be fast.
@@ -187,5 +187,5 @@ phpdbg -qrr vendor/bin/phpunit --coverage-html coverage tests
 
 ```shell
 $ docker-compose up -d
-$ docker exec -w /var/www/html -it quillstack_local-storage sh
+$ docker exec -w /var/www/html -it quillstack_di sh
 ```
