@@ -32,8 +32,8 @@
         ],
         "psr-4": {
             "Quillstack\\DI\\": "src/",
-            "Quillstack\\Tests\\DI\\": "tests/",
-            "Quillstack\\Mocks\\DI\\": "tests/Mocks/DI/"
+            "Quillstack\\Tests\\DI\\": "tests/tests/",
+            "Quillstack\\Mocks\\DI\\": "tests/mocks/"
         }
     },
     "require-dev": {
