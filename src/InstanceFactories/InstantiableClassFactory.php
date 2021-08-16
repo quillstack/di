@@ -1,11 +1,11 @@
 <?php
 
-namespace QuillStack\DI\InstanceFactories;
+namespace Quillstack\DI\InstanceFactories;
 
 use JetBrains\PhpStorm\ArrayShape;
-use QuillStack\DI\Container;
-use QuillStack\DI\Exceptions\ParameterDefinitionNotFoundException;
-use QuillStack\DI\InstanceFactoryWithContainerInterface;
+use Quillstack\DI\Container;
+use Quillstack\DI\Exceptions\ParameterDefinitionNotFoundException;
+use Quillstack\DI\InstanceFactoryWithContainerInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;

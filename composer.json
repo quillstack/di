@@ -31,9 +31,9 @@
             "src/container.helper.php"
         ],
         "psr-4": {
-            "QuillStack\\DI\\": "src/",
-            "QuillStack\\Tests\\DI\\": "tests/",
-            "QuillStack\\Mocks\\DI\\": "tests/QuillStack/Mocks/DI/"
+            "Quillstack\\DI\\": "src/",
+            "Quillstack\\Tests\\DI\\": "tests/",
+            "Quillstack\\Mocks\\DI\\": "tests/Mocks/DI/"
         }
     },
     "require-dev": {

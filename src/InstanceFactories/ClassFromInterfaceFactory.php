@@ -1,9 +1,9 @@
 <?php
 
-namespace QuillStack\DI\InstanceFactories;
+namespace Quillstack\DI\InstanceFactories;
 
-use QuillStack\DI\Container;
-use QuillStack\DI\InstanceFactoryWithContainerInterface;
+use Quillstack\DI\Container;
+use Quillstack\DI\InstanceFactoryWithContainerInterface;
 
 /**
  * The factory creates the instance of the class based on the interface. It requires the interface and the class
