@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Quillstack\DI\Exceptions;
 
-final class IncorrectClassTypeException extends ContainerException
+class IncorrectClassTypeException extends ContainerException
 {
+    //
 }

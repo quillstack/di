@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Quillstack\DI\Exceptions;
 
-final class ContainerNotInitialisedException extends ContainerException
+class ContainerNotInitialisedException extends ContainerException
 {
     //
 }

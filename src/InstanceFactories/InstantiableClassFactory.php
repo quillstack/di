@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Quillstack\DI\InstanceFactories;
 
 use JetBrains\PhpStorm\ArrayShape;
@@ -14,7 +16,7 @@ use TypeError;
 /**
  * The factory for classes.
  */
-final class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
+class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
 {
     /**
      * The instance of the Reflection class to find out all parameters we need to create before we initialise

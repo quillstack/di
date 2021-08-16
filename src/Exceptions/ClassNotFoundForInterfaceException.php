@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Quillstack\DI\Exceptions;
 
 use Psr\Container\NotFoundExceptionInterface;
 
-final class ClassNotFoundForInterfaceException extends ContainerException implements NotFoundExceptionInterface
+class ClassNotFoundForInterfaceException extends ContainerException implements NotFoundExceptionInterface
 {
     //
 }

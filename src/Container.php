@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Quillstack\DI;
 
 use Psr\Container\ContainerInterface;
@@ -16,7 +18,7 @@ use ReflectionException;
 /**
  * The Dependency Injection Container.
  */
-final class Container implements ContainerInterface
+class Container implements ContainerInterface
 {
     /**
      * Instances array.
