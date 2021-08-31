@@ -11,6 +11,9 @@ use Quillstack\Mocks\DI\Database\MockDatabase;
 use Quillstack\Mocks\DI\Database\MockDatabaseController;
 use Quillstack\Mocks\DI\FirstConfig\MockFirstFactory;
 use Quillstack\Mocks\DI\FirstConfig\MockNoConfigForFactory;
+use Quillstack\Mocks\DI\Object\Logger;
+use Quillstack\Mocks\DI\Object\LoggerInterface;
+use Quillstack\Mocks\DI\Object\Service;
 use Quillstack\Mocks\DI\Optional\MockOptionalController;
 use Quillstack\Mocks\DI\ParameterConfig\MockConfig;
 use Quillstack\Mocks\DI\ParameterConfig\MockNoTypeConfig;
@@ -30,6 +33,8 @@ final class InstantiableClassFactoryTest extends TestCase
 
     protected function setUp(): void
     {
+        $logger = new Logger();
+        $logger->value = 3;
         $this->factory = new InstantiableClassFactory();
         $this->container = new Container([
             MockDatabase::class => [
@@ -44,6 +49,8 @@ final class InstantiableClassFactoryTest extends TestCase
             MockFirstFactory::class => [
                 'level' => 0,
             ],
+            Logger::class => $logger,
+            LoggerInterface::class => $logger,
         ]);
     }
 
@@ -118,5 +125,12 @@ final class InstantiableClassFactoryTest extends TestCase
 
         $this->assertEquals(0, $factory->level);
         $this->assertEquals(300, $factoryNoConfig->level);
+    }
+
+    public function testCreatingWithConfigAndObjects()
+    {
+        $service = $this->container->get(Service::class);
+        $this->assertEquals(3, $service->logger->value);
+        $this->assertEquals(3, $service->loggerFromInterface->value);
     }
 }

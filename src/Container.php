@@ -231,4 +231,14 @@ class Container implements ContainerInterface
 
         return Container::$instance;
     }
+
+    public function isValue(string $id): bool
+    {
+        return isset($this->config[$id]) && is_object($this->config[$id]);
+    }
+
+    public function getValue(string $id): object
+    {
+        return $this->config[$id];
+    }
 }

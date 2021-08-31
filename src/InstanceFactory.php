@@ -66,6 +66,23 @@ final class InstanceFactory implements InstanceFactoryInterface
             return $this->createFromCustomFactory($id, $customFactoryClassName);
         }
 
+        if ($this->container->isValue($id)) {
+            return $this->container->getValue($id);
+        }
+
+        return $this->createFromReflection($id);
+    }
+
+    /**
+     * Create a reflection and try to return an object.
+     *
+     * @param string $id
+     *
+     * @return object
+     * @throws ReflectionException|UnresolvableParameterTypeException
+     */
+    private function createFromReflection(string $id): object
+    {
         $class = new ReflectionClass($id);
 
         if ($class->isInstantiable()) {
