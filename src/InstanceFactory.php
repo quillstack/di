@@ -66,6 +66,10 @@ final class InstanceFactory implements InstanceFactoryInterface
             return $this->createFromCustomFactory($id, $customFactoryClassName);
         }
 
+        if ($this->container->isValue($id)) {
+            return $this->container->getValue($id);
+        }
+
         $class = new ReflectionClass($id);
 
         if ($class->isInstantiable()) {
