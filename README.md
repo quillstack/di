@@ -17,7 +17,7 @@ on _PSR-11: Container interface_, and with the main goal: to be fast.
 You can find the full documentation on the website: \
 https://quillstack.org/di
 
-This DI container uses constructors and types of the class properties.
+This DI container uses constructors and types of class properties.
 
 ### Installation
 
@@ -29,12 +29,13 @@ composer require quillstack/di
 
 ### Usage
 
-You can use Quill DI when you want:
+You can use Quillstack DI Container when you want:
 - To have a simple and fast DI container.
 - Define dependencies based on interfaces.
-- Define parameters e.g. credentials for a database in `Database` class.
+- Define parameters e.g. credentials for a database in the `Database` class.
 - To use constructors or/and class properties.
 - To implement your own instance factories e.g. for `Request` classes.
+- To use objects as dependencies.
 
 #### Simple usage
 
@@ -64,8 +65,7 @@ class ExampleController
 
 #### Dependencies based on interfaces
 
-If you want to define which class should be loaded based on an interface,
-you can easily do that:
+If you want to define which class should be loaded based on an interface:
 
 ```php
 $container = new Container([
@@ -74,7 +74,7 @@ $container = new Container([
 $controller = $container->get(ExampleController::class);
 ```
 
-You can easily define your dependencies using interfaces:
+You can define your dependencies using interfaces:
 
 ```php
 <?php
@@ -88,8 +88,7 @@ class ExampleController
 }
 ```
 
-When you create the object using DI container, the type of `$logger` property
-will be set to `Logger`.
+When you create the object using the DI container, the type of `$logger` property will be set to `Logger`.
 
 #### Dependencies with parameters
 
@@ -122,8 +121,8 @@ class Database
 
 #### Custom instance factories
 
-You can implement your own instance factory. If there a family of classes,
-where you'd like to create a class in a special way, it'll be available.
+You can implement your own instance factory. This is especially useful when you want to create many objects in a class
+family that are very similar in some way.
 
 In our example we want to create different request objects:
 
@@ -135,11 +134,9 @@ class CreateUserRequest implements RequestInterface
 }
 ```
 
-First we had to create `RequestInterface` as a common interface for all
-requests.
+First, we had to create `RequestInterface` as a common interface for all requests.
 
-Next we have to create an instance factory class. To create it extend a class
-with `CustomFactoryInterface`:
+Next, we have to create an instance factory class. To create it, extend a class with `CustomFactoryInterface`:
 
 ```php
 <?php
@@ -160,7 +157,7 @@ class RequestClassFactory implements CustomFactoryInterface
 }
 ```
 
-Also, use this configuration array, when you create a DI contaienr:
+Also, use this configuration array when you create a DI container:
 
 ```php
 $container = new Container([
@@ -168,6 +165,25 @@ $container = new Container([
 ]);
 $controller = $container->get(ExampleController::class);
 ```
+
+Custom factories are useful for objects you want to create similarly.
+
+#### Dependencies as objects
+
+In this example, whenever a new class of LoggerInterface will be required as a dependency, a container will use a 
+previously defined object. This object can be created once in a bootstrap file and used in the entire application:
+
+```php
+$logger = new Logger('name');
+$logger->pushHandler(new StreamHandler('var/app.log'););
+
+$container = new Container([
+    LoggerInterface::class => $logger,
+]);
+```
+
+This configuration is helpful if an object should be created once and its instance
+should be used in other places in the application.
 
 ### Unit tests
 
