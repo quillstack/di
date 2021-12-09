@@ -1,6 +1,6 @@
 # Quillstack DI Container
 
-[![Build Status](https://travis-ci.com/quillstack/di.svg?branch=main)](https://travis-ci.com/quillstack/di)
+[![Build Status](https://app.travis-ci.com/quillstack/di.svg?branch=main)](https://app.travis-ci.com/quillstack/di)
 [![Downloads](https://img.shields.io/packagist/dt/quillstack/di.svg)](https://packagist.org/packages/quillstack/di)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=coverage)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=ncloc)](https://sonarcloud.io/dashboard?id=quillstack_di)
