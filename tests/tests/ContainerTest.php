@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use Quillstack\DI\Container;
 use Quillstack\DI\Exceptions\ClassLoopException;
 use Quillstack\DI\Exceptions\UnableToCreateReflectionClassException;
-use Quillstack\Mocks\DI\ContainerItself\MockFactory;
-use Quillstack\Mocks\DI\Database\MockDatabase;
-use Quillstack\Mocks\DI\Loop\MockA;
-use Quillstack\Mocks\DI\Loop\MockC;
-use Quillstack\Mocks\DI\NoLoop\MockA as NoLoopMockA;
-use Quillstack\Mocks\DI\NoLoop\MockB as NoLoopMockB;
-use Quillstack\Mocks\DI\NoLoop\MockC as NoLoopMockC;
-use Quillstack\Mocks\DI\Simple\MockController;
+use Quillstack\DI\Tests\Mocks\ContainerItself\MockFactory;
+use Quillstack\DI\Tests\Mocks\Database\MockDatabase;
+use Quillstack\DI\Tests\Mocks\Loop\MockA;
+use Quillstack\DI\Tests\Mocks\Loop\MockC;
+use Quillstack\DI\Tests\Mocks\NoLoop\MockA as NoLoopMockA;
+use Quillstack\DI\Tests\Mocks\NoLoop\MockB as NoLoopMockB;
+use Quillstack\DI\Tests\Mocks\NoLoop\MockC as NoLoopMockC;
+use Quillstack\DI\Tests\Mocks\Simple\MockController;
 
 final class ContainerTest extends TestCase
 {

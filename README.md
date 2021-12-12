@@ -5,6 +5,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=coverage)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=ncloc)](https://sonarcloud.io/dashboard?id=quillstack_di)
 [![StyleCI](https://github.styleci.io/repos/291464853/shield?branch=main)](https://github.styleci.io/repos/291464853?branch=main)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/quillstack/di/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/quillstack/di/?branch=main)
 [![CodeFactor](https://www.codefactor.io/repository/github/quillstack/di/badge)](https://www.codefactor.io/repository/github/quillstack/di)
 ![Packagist License](https://img.shields.io/packagist/l/quillstack/di)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=quillstack_di&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=quillstack_di)

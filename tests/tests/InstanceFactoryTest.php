@@ -9,11 +9,11 @@ use Quillstack\DI\Exceptions\IncorrectClassTypeException;
 use Quillstack\DI\Exceptions\InterfaceDefinitionNotFoundException;
 use Quillstack\DI\Exceptions\ParameterDefinitionNotFoundException;
 use Quillstack\DI\Exceptions\UnresolvableParameterTypeException;
-use Quillstack\Mocks\DI\Database\MockDatabaseController;
-use Quillstack\Mocks\DI\Database\MockDatabaseInterface;
-use Quillstack\Mocks\DI\Errors\MockTrait;
-use Quillstack\Mocks\DI\Logger\MockLoggerController;
-use Quillstack\Mocks\DI\Logger\MockLoggerInterface;
+use Quillstack\DI\Tests\Mocks\Database\MockDatabaseController;
+use Quillstack\DI\Tests\Mocks\Database\MockDatabaseInterface;
+use Quillstack\DI\Tests\Mocks\Errors\MockTrait;
+use Quillstack\DI\Tests\Mocks\Logger\MockLoggerController;
+use Quillstack\DI\Tests\Mocks\Logger\MockLoggerInterface;
 
 final class InstanceFactoryTest extends TestCase
 {

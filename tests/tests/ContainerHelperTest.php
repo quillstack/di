@@ -7,7 +7,7 @@ namespace Quillstack\Tests\DI;
 use PHPUnit\Framework\TestCase;
 use Quillstack\DI\Container;
 use Quillstack\DI\Exceptions\ContainerNotInitialisedException;
-use Quillstack\Mocks\DI\ParameterConfig\MockConfig;
+use Quillstack\DI\Tests\Mocks\ParameterConfig\MockConfig;
 
 final class ContainerHelperTest extends TestCase
 {

@@ -6,10 +6,10 @@ namespace Quillstack\Tests\DI\InstanceFactories;
 
 use PHPUnit\Framework\TestCase;
 use Quillstack\DI\Container;
-use Quillstack\Mocks\DI\External\ExternalClassInterface;
-use Quillstack\Mocks\DI\External\ExternalController;
-use Quillstack\Mocks\DI\External\ExternalInstanceFactory;
-use Quillstack\Mocks\DI\External\ExternalNextInterface;
+use Quillstack\DI\Tests\Mocks\External\ExternalClassInterface;
+use Quillstack\DI\Tests\Mocks\External\ExternalController;
+use Quillstack\DI\Tests\Mocks\External\ExternalInstanceFactory;
+use Quillstack\DI\Tests\Mocks\External\ExternalNextInterface;
 
 final class ExternalInstanceFactoryTest extends TestCase
 {

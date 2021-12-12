@@ -7,9 +7,9 @@ namespace Quillstack\Tests\DI\InstanceFactories;
 use PHPUnit\Framework\TestCase;
 use Quillstack\DI\Container;
 use Quillstack\DI\InstanceFactories\ClassFromInterfaceFactory;
-use Quillstack\Mocks\DI\Logger\MockLogger;
-use Quillstack\Mocks\DI\Logger\MockLoggerController;
-use Quillstack\Mocks\DI\Logger\MockLoggerInterface;
+use Quillstack\DI\Tests\Mocks\Logger\MockLogger;
+use Quillstack\DI\Tests\Mocks\Logger\MockLoggerController;
+use Quillstack\DI\Tests\Mocks\Logger\MockLoggerInterface;
 
 final class ClassFromInterfaceFactoryTest extends TestCase
 {
