@@ -2,30 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Quillstack\Tests\DI\InstanceFactories;
+namespace Quillstack\DI\Tests\Unit\InstanceFactories;
 
-use PHPUnit\Framework\TestCase;
 use Quillstack\DI\Container;
 use Quillstack\DI\Tests\Mocks\External\ExternalClassInterface;
 use Quillstack\DI\Tests\Mocks\External\ExternalController;
 use Quillstack\DI\Tests\Mocks\External\ExternalInstanceFactory;
 use Quillstack\DI\Tests\Mocks\External\ExternalNextInterface;
+use Quillstack\UnitTests\AssertEqual;
 
-final class ExternalInstanceFactoryTest extends TestCase
+class TestExternalInstanceFactory
 {
-    public function testExternalInstanceFactory()
+    public function __construct(private AssertEqual $assertEqual)
+    {
+        //
+    }
+
+    public function externalInstanceFactory()
     {
         $container = new Container([ExternalClassInterface::class => ExternalInstanceFactory::class]);
         $controller = $container->get(ExternalController::class);
 
-        $this->assertEquals('test', $controller->external->test);
+        $this->assertEqual->equal('test', $controller->external->test);
     }
 
-    public function testExternalNextInstanceFactory()
+    public function externalNextInstanceFactory()
     {
         $container = new Container([ExternalNextInterface::class => ExternalInstanceFactory::class]);
         $controller = $container->get(ExternalController::class);
 
-        $this->assertEquals('test', $controller->external->test);
+        $this->assertEqual->equal('test', $controller->external->test);
     }
 }

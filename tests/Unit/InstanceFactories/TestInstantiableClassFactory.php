@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Quillstack\Tests\DI\InstanceFactories;
+namespace Quillstack\DI\Tests\Unit\InstanceFactories;
 
-use PHPUnit\Framework\TestCase;
 use Quillstack\DI\Container;
 use Quillstack\DI\InstanceFactories\InstantiableClassFactory;
 use Quillstack\DI\Tests\Mocks\Database\MockDatabase;
@@ -12,7 +11,6 @@ use Quillstack\DI\Tests\Mocks\Database\MockDatabaseController;
 use Quillstack\DI\Tests\Mocks\FirstConfig\MockFirstFactory;
 use Quillstack\DI\Tests\Mocks\FirstConfig\MockNoConfigForFactory;
 use Quillstack\DI\Tests\Mocks\Object\Logger;
-use Quillstack\DI\Tests\Mocks\Object\LoggerInterface;
 use Quillstack\DI\Tests\Mocks\Object\Service;
 use Quillstack\DI\Tests\Mocks\Optional\MockOptionalController;
 use Quillstack\DI\Tests\Mocks\ParameterConfig\MockConfig;
@@ -21,8 +19,11 @@ use Quillstack\DI\Tests\Mocks\Properties\MockProperties;
 use Quillstack\DI\Tests\Mocks\Simple\MockController;
 use Quillstack\DI\Tests\Mocks\Simple\MockRepository;
 use Quillstack\DI\Tests\Mocks\Simple\MockService;
+use Quillstack\DI\Tests\Mocks\Object\LoggerInterface;
+use Quillstack\UnitTests\AssertEqual;
+use Quillstack\UnitTests\Types\AssertObject;
 
-final class InstantiableClassFactoryTest extends TestCase
+class TestInstantiableClassFactory
 {
     private const HOSTNAME = '127.0.0.1';
     private const USER = 'root';
@@ -31,7 +32,7 @@ final class InstantiableClassFactoryTest extends TestCase
     private InstantiableClassFactory $factory;
     private Container $container;
 
-    protected function setUp(): void
+    public function __construct(private AssertEqual $assertEqual, private AssertObject $assertObject)
     {
         $logger = new Logger();
         $logger->value = 3;
@@ -54,83 +55,78 @@ final class InstantiableClassFactoryTest extends TestCase
         ]);
     }
 
-    public function testCreatingWithParameterWithNoType()
+    public function creatingWithParameterWithNoType()
     {
         $config = $this->container->get(MockNoTypeConfig::class);
 
-        $this->assertEquals('default', $config->content);
+        $this->assertEqual->equal('default', $config->content);
     }
 
-    public function testSettingContainer()
+    public function settingContainer()
     {
         $factory = $this->factory->setContainer($this->container);
 
-        $this->assertEquals($this->factory, $factory);
+        $this->assertEqual->equal($this->factory, $factory);
     }
 
-    public function testCreatingSimpleInstance()
+    public function creatingSimpleInstance()
     {
         $controller = $this->container->get(MockController::class);
 
-        $this->assertInstanceOf(MockController::class, $controller);
-        $this->assertNotNull($controller->service);
-        $this->assertInstanceOf(MockService::class, $controller->service);
-        $this->assertNotNull($controller->service->repository);
-        $this->assertInstanceOf(MockRepository::class, $controller->service->repository);
+        $this->assertObject->instanceOf(MockController::class, $controller);
+        $this->assertObject->notNull($controller->service);
+        $this->assertObject->instanceOf(MockService::class, $controller->service);
+        $this->assertObject->notNull($controller->service->repository);
+        $this->assertObject->instanceOf(MockRepository::class, $controller->service->repository);
     }
 
-    public function testCreatingInstanceWithParameters()
+    public function creatingInstanceWithParameters()
     {
         $controller = $this->container->get(MockDatabaseController::class);
 
-        $this->assertInstanceOf(MockDatabaseController::class, $controller);
-        $this->assertNotNull($controller->database);
-        $this->assertInstanceOf(MockDatabase::class, $controller->database);
-        $this->assertNotNull($controller->database->hostname);
-        $this->assertEquals(self::HOSTNAME, $controller->database->hostname);
-        $this->assertNotNull($controller->database->user);
-        $this->assertEquals(self::USER, $controller->database->user);
-        $this->assertNotNull($controller->database->password);
-        $this->assertEquals(self::PASSWORD, $controller->database->password);
-        $this->assertNotNull($controller->database->database);
-        $this->assertEquals(self::DATABASE, $controller->database->database);
+        $this->assertObject->instanceOf(MockDatabaseController::class, $controller);
+        $this->assertObject->notNull($controller->database);
+        $this->assertObject->instanceOf(MockDatabase::class, $controller->database);
+        $this->assertEqual->equal(self::HOSTNAME, $controller->database->hostname);
+        $this->assertEqual->equal(self::USER, $controller->database->user);
+        $this->assertEqual->equal(self::PASSWORD, $controller->database->password);
+        $this->assertEqual->equal(self::DATABASE, $controller->database->database);
     }
 
-    public function testCreatingInstanceWithOptionalParameters()
+    public function creatingInstanceWithOptionalParameters()
     {
         $controller = $this->container->get(MockOptionalController::class);
 
-        $this->assertIsString($controller->name);
-        $this->assertEquals(MockOptionalController::NAME, $controller->name);
+        $this->assertEqual->equal(MockOptionalController::NAME, $controller->name);
     }
 
-    public function testCreatingFromProperties()
+    public function creatingFromProperties()
     {
         $properties = $this->container->get(MockProperties::class);
 
-        $this->assertInstanceOf(MockDatabase::class, $properties->getDatabase());
+        $this->assertObject->instanceOf(MockDatabase::class, $properties->getDatabase());
     }
 
-    public function testCreatingWithConfig()
+    public function creatingWithConfig()
     {
         $config = $this->container->get(MockConfig::class);
 
-        $this->assertEquals('config', $config->test);
+        $this->assertEqual->equal('config', $config->test);
     }
 
-    public function testFirstConfigThenDefaultValue()
+    public function firstConfigThenDefaultValue()
     {
         $factory = $this->container->get(MockFirstFactory::class);
         $factoryNoConfig  = $this->container->get(MockNoConfigForFactory::class);
 
-        $this->assertEquals(0, $factory->level);
-        $this->assertEquals(300, $factoryNoConfig->level);
+        $this->assertEqual->equal(0, $factory->level);
+        $this->assertEqual->equal(300, $factoryNoConfig->level);
     }
 
-    public function testCreatingWithConfigAndObjects()
+    public function creatingWithConfigAndObjects()
     {
         $service = $this->container->get(Service::class);
-        $this->assertEquals(3, $service->logger->value);
-        $this->assertEquals(3, $service->loggerFromInterface->value);
+        $this->assertEqual->equal(3, $service->logger->value);
+        $this->assertEqual->equal(3, $service->loggerFromInterface->value);
     }
 }

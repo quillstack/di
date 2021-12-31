@@ -1,8 +1,7 @@
 <?php
 
-namespace Quillstack\Tests\DI;
+namespace Quillstack\DI\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use Quillstack\DI\Container;
 use Quillstack\DI\Exceptions\ClassNotFoundForInterfaceException;
 use Quillstack\DI\Exceptions\IncorrectClassTypeException;
@@ -14,12 +13,13 @@ use Quillstack\DI\Tests\Mocks\Database\MockDatabaseInterface;
 use Quillstack\DI\Tests\Mocks\Errors\MockTrait;
 use Quillstack\DI\Tests\Mocks\Logger\MockLoggerController;
 use Quillstack\DI\Tests\Mocks\Logger\MockLoggerInterface;
+use Quillstack\UnitTests\AssertExceptions;
 
-final class InstanceFactoryTest extends TestCase
+class TestInstanceFactory
 {
     private Container $container;
 
-    protected function setUp(): void
+    public function __construct(private AssertExceptions $assertExceptions)
     {
         $this->container = new Container([
             MockLoggerInterface::class => [],
@@ -27,37 +27,37 @@ final class InstanceFactoryTest extends TestCase
         ]);
     }
 
-    public function testExceptionWhileCreatingInstanceWithParameters()
+    public function exceptionWhileCreatingInstanceWithParameters()
     {
-        $this->expectException(ParameterDefinitionNotFoundException::class);
+        $this->assertExceptions->expect(ParameterDefinitionNotFoundException::class);
 
         $this->container->get(MockDatabaseController::class);
     }
 
-    public function testExceptionWhenDefinitionNotFound()
+    public function exceptionWhenDefinitionNotFound()
     {
-        $this->expectException(InterfaceDefinitionNotFoundException::class);
+        $this->assertExceptions->expect(InterfaceDefinitionNotFoundException::class);
 
         $this->container->getInstantiableClassForInterface(MockLoggerController::class);
     }
 
-    public function testExceptionUnresolvableParameterType()
+    public function exceptionUnresolvableParameterType()
     {
-        $this->expectException(UnresolvableParameterTypeException::class);
+        $this->assertExceptions->expect(UnresolvableParameterTypeException::class);
 
         $this->container->get(MockTrait::class);
     }
 
-    public function testExceptionWhenInterfaceDefinitionIsNotString()
+    public function exceptionWhenInterfaceDefinitionIsNotString()
     {
-        $this->expectException(IncorrectClassTypeException::class);
+        $this->assertExceptions->expect(IncorrectClassTypeException::class);
 
         $this->container->get(MockLoggerInterface::class);
     }
 
-    public function testExceptionWhenClassNotFoundForInterface()
+    public function exceptionWhenClassNotFoundForInterface()
     {
-        $this->expectException(ClassNotFoundForInterfaceException::class);
+        $this->assertExceptions->expect(ClassNotFoundForInterfaceException::class);
 
         $this->container->get(MockDatabaseInterface::class);
     }

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Quillstack\Tests\DI;
+namespace Quillstack\DI\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use Quillstack\DI\Container;
 use Quillstack\DI\Exceptions\ClassLoopException;
 use Quillstack\DI\Exceptions\UnableToCreateReflectionClassException;
@@ -16,63 +15,71 @@ use Quillstack\DI\Tests\Mocks\NoLoop\MockA as NoLoopMockA;
 use Quillstack\DI\Tests\Mocks\NoLoop\MockB as NoLoopMockB;
 use Quillstack\DI\Tests\Mocks\NoLoop\MockC as NoLoopMockC;
 use Quillstack\DI\Tests\Mocks\Simple\MockController;
+use Quillstack\UnitTests\AssertEqual;
+use Quillstack\UnitTests\AssertExceptions;
+use Quillstack\UnitTests\Types\AssertBoolean;
+use Quillstack\UnitTests\Types\AssertObject;
 
-final class ContainerTest extends TestCase
+class TestContainer
 {
     private Container $container;
 
-    protected function setUp(): void
-    {
+    public function __construct(
+        private AssertBoolean $assertBoolean,
+        private AssertExceptions $assertExceptions,
+        private AssertObject $assertObject,
+        private AssertEqual $assertEqual
+    ) {
         $this->container = new Container();
     }
 
-    public function testHasMethod()
+    public function hasMethod()
     {
         $this->container->get(MockController::class);
         $hasMockController = $this->container->has(MockController::class);
         $hasMockDatabase = $this->container->has(MockDatabase::class);
 
-        $this->assertTrue($hasMockController);
-        $this->assertFalse($hasMockDatabase);
+        $this->assertBoolean->isTrue($hasMockController);
+        $this->assertBoolean->isFalse($hasMockDatabase);
     }
 
-    public function testReflectionException()
+    public function reflectionException()
     {
-        $this->expectException(UnableToCreateReflectionClassException::class);
+        $this->assertExceptions->expect(UnableToCreateReflectionClassException::class);
 
         $this->container->get('UnknownClass');
     }
 
-    public function testContainerItself()
+    public function containerItself()
     {
         $mockFactory = $this->container->get(MockFactory::class);
         $controller = $mockFactory->getController();
 
-        $this->assertInstanceOf(MockController::class, $controller);
-        $this->assertSame($this->container, $mockFactory->container);
+        $this->assertObject->instanceOf(MockController::class, $controller);
+        $this->assertEqual->equal($this->container, $mockFactory->container);
     }
 
-    public function testSimpleMock()
+    public function simpleMock()
     {
-        $this->expectException(ClassLoopException::class);
+        $this->assertExceptions->expect(ClassLoopException::class);
 
         $this->container->get(MockA::class);
     }
 
-    public function testMoreComplexSimpleMock()
+    public function moreComplexSimpleMock()
     {
-        $this->expectException(ClassLoopException::class);
+        $this->assertExceptions->expect(ClassLoopException::class);
 
         $this->container->get(MockC::class);
     }
 
-    public function testStack()
+    public function stack()
     {
         $mockA = $this->container->get(NoLoopMockA::class);
         $mockB = $this->container->get(NoLoopMockB::class);
         $mockC = $this->container->get(NoLoopMockC::class);
 
-        $this->assertSame($mockB, $mockA->mock);
-        $this->assertSame($mockB, $mockC->mock);
+        $this->assertEqual->equal($mockB, $mockA->mock);
+        $this->assertEqual->equal($mockB, $mockC->mock);
     }
 }
