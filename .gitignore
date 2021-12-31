@@ -1,9 +1,7 @@
 /.DS_Store/
 /.idea/
 /.scannerwork/
-/coverage/
 /vendor/
 composer.phar
 composer.lock
-.phpunit.result.cache
-phpunit.*.xml
+unit-tests.coverage.xml
