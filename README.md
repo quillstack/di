@@ -191,13 +191,7 @@ should be used in other places in the application.
 Run tests using a command:
 
 ```
-phpdbg -qrr vendor/bin/phpunit
-```
-
-Check the tests coverage:
-
-```
-phpdbg -qrr vendor/bin/phpunit --coverage-html coverage tests
+phpdbg -qrr ./vendor/bin/unit-tests
 ```
 
 ### Docker
