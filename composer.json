@@ -36,13 +36,13 @@
         }
     },
     "require-dev": {
-        "quillstack/unit-tests": "^1.0"
+        "quillstack/unit-tests": "^0.2.4"
     },
     "prefer-stable": true,
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
-            "dev-main": "1.0.x-dev"
+            "dev-main": "0.x-dev"
         }
     }
 }
