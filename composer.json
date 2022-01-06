@@ -36,7 +36,7 @@
         }
     },
     "require-dev": {
-        "quillstack/unit-tests": "^1.0"
+        "quillstack/unit-tests": "^0.2.6"
     },
     "prefer-stable": true,
     "minimum-stability": "dev",
