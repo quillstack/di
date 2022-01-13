@@ -22,42 +22,26 @@ class Container implements ContainerInterface
 {
     /**
      * Instances array.
-     *
-     * @var array
      */
     private array $instances = [];
 
     /**
      * Current classes stack to detect loops.
-     *
-     * @var array
      */
     private array $stack = [];
 
     /**
      * Instance factory to create new instances.
-     *
-     * @var InstanceFactory
      */
     private InstanceFactory $instanceFactory;
 
     /**
      * Configuration for interfaces and parameters.
-     *
-     * @var array
      */
     private array $config;
 
-    /**
-     * @var Container
-     */
     private static Container $instance;
 
-    /**
-     * Container constructor.
-     *
-     * @param array $config
-     */
     public function __construct(array $config = [])
     {
         $this->config = $config;
@@ -96,8 +80,6 @@ class Container implements ContainerInterface
 
     /**
      * Method to create a new instance.
-     *
-     * @param $id
      */
     private function createNewInstance(string $id): void
     {
@@ -110,9 +92,14 @@ class Container implements ContainerInterface
         try {
             $this->instances[$id] = $this->instanceFactory->create($id);
         } catch (ReflectionException $exception) {
+            array_pop($this->stack);
             $message = "Unable to create reflection class for `{$id}`";
 
             throw new UnableToCreateReflectionClassException($message, 500, $exception);
+        } catch (\Exception $exception) {
+            array_pop($this->stack);
+
+            throw $exception;
         }
 
         Container::$instance = $this;
@@ -120,10 +107,6 @@ class Container implements ContainerInterface
 
     /**
      * Gets a class name for the given interface from the configuration.
-     *
-     * @param string $interface
-     *
-     * @return string
      */
     public function getInstantiableClassForInterface(string $interface): string
     {
@@ -146,11 +129,6 @@ class Container implements ContainerInterface
 
     /**
      * Gets a parameter value for the given name from the configuration.
-     *
-     * @param string $className
-     * @param string $parameterName
-     *
-     * @return mixed
      */
     public function getParameterForClass(string $className, string $parameterName): mixed
     {
@@ -161,11 +139,6 @@ class Container implements ContainerInterface
         return $this->config[$className][$parameterName];
     }
 
-    /**
-     * @param string $classNameOrInterface
-     *
-     * @return string|null
-     */
     public function getCustomFactoryClassName(string $classNameOrInterface): ?string
     {
         if (!class_exists($classNameOrInterface) && !interface_exists($classNameOrInterface)) {
@@ -196,11 +169,6 @@ class Container implements ContainerInterface
         return null;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return string|null
-     */
     private function getPotentialClassFactory(string $id): ?string
     {
         $class = $this->config[$id];
@@ -220,9 +188,6 @@ class Container implements ContainerInterface
         return null;
     }
 
-    /**
-     * @return Container
-     */
     public static function getInstance(): Container
     {
         if (!isset(Container::$instance)) {
@@ -240,5 +205,10 @@ class Container implements ContainerInterface
     public function getValue(string $id): object
     {
         return $this->config[$id];
+    }
+
+    public function addToConfig(array $config = []): void
+    {
+        $this->config += $config;
     }
 }

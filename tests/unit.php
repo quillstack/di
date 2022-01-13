@@ -10,4 +10,6 @@ return [
     \Quillstack\DI\Tests\Unit\InstanceFactories\TestClassFromInterfaceFactory::class,
     \Quillstack\DI\Tests\Unit\InstanceFactories\TestExternalInstanceFactory::class,
     \Quillstack\DI\Tests\Unit\InstanceFactories\TestInstantiableClassFactory::class,
+
+    \Quillstack\DI\Tests\Unit\TestAddToConfig::class,
 ];
