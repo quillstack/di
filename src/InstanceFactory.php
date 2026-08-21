@@ -37,14 +37,18 @@ final class InstanceFactory implements InstanceFactoryInterface
     }
 
     /**
-     * Initialise cache for the custom factory.
+     * The factory itself, built by the container rather than by a plain `new`. Building it
+     * by hand left it with no configuration and no dependencies, so a factory could not be
+     * told anything about what it was supposed to build.
      *
      * @param class-string<CustomFactoryInterface> $customFactoryClassName
      */
     public function classFromCustomFactory(string $customFactoryClassName): CustomFactoryInterface
     {
         if (!isset($this->customFactories[$customFactoryClassName])) {
-            $this->customFactories[$customFactoryClassName] = new $customFactoryClassName();
+            /** @var CustomFactoryInterface $factory */
+            $factory = $this->container->get($customFactoryClassName);
+            $this->customFactories[$customFactoryClassName] = $factory;
         }
 
         return $this->customFactories[$customFactoryClassName];
