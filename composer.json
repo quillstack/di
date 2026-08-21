@@ -24,7 +24,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "psr/container": "^2.0"
+        "psr/container": "^1.1 || ^2.0"
     },
     "autoload": {
         "files": [
@@ -36,7 +36,7 @@
         }
     },
     "require-dev": {
-        "quillstack/unit-tests": "^1.0"
+        "quillstack/unit-tests": "^0.3"
     },
     "prefer-stable": true,
     "minimum-stability": "dev",

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Quillstack\DI\Exceptions;
 
-use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-class UnableToCreateReflectionClassException extends ContainerException implements ContainerExceptionInterface
+class UnableToCreateReflectionClassException extends ContainerException implements NotFoundExceptionInterface
 {
     //
 }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Quillstack\DI;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Quillstack\DI\Exceptions\ClassLoopException;
 use Quillstack\DI\Exceptions\ContainerNotInitialisedException;
 use Quillstack\DI\Exceptions\IncorrectClassTypeException;
@@ -57,7 +59,7 @@ class Container implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function get($id)
+    public function get(string $id): mixed
     {
         if ($id === Container::class) {
             return $this;
@@ -72,10 +74,27 @@ class Container implements ContainerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * Returns `true` when `get($id)` is able to resolve the entry, as required by PSR-11.
+     * Autowiring has no explicit definitions to inspect, so an entry which is neither cached
+     * nor configured is resolved once, and the result is kept for the following `get()` call.
      */
-    public function has($id): bool
+    public function has(string $id): bool
     {
-        return isset($this->instances[$id]);
+        if ($id === Container::class || isset($this->instances[$id]) || isset($this->config[$id])) {
+            return true;
+        }
+
+        try {
+            $this->get($id);
+        } catch (NotFoundExceptionInterface) {
+            return false;
+        } catch (ContainerExceptionInterface) {
+            // The entry is known, but could not be built for an unrelated reason.
+            return true;
+        }
+
+        return true;
     }
 
     /**

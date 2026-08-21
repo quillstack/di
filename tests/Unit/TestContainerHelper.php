@@ -26,7 +26,9 @@ class TestContainerHelper
         $container = \container();
 
         $this->assertObject->instanceOf(Container::class, $container);
-        $this->assertBoolean->isFalse(
+
+        // MockConfig is resolvable, so PSR-11 requires `has()` to be true before the first `get()`.
+        $this->assertBoolean->isTrue(
             $container->has(MockConfig::class)
         );
     }
