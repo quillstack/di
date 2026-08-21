@@ -8,7 +8,6 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Quillstack\DI\Exceptions\ClassLoopException;
-use Quillstack\DI\Exceptions\ContainerNotInitialisedException;
 use Quillstack\DI\Exceptions\IncorrectClassTypeException;
 use Quillstack\DI\Exceptions\ClassNotFoundForInterfaceException;
 use Quillstack\DI\Exceptions\InterfaceDefinitionNotFoundException;
@@ -42,8 +41,6 @@ class Container implements ContainerInterface
      */
     private array $config;
 
-    private static Container $instance;
-
     public function __construct(array $config = [])
     {
         $this->config = $config;
@@ -53,7 +50,6 @@ class Container implements ContainerInterface
             new ClassFromInterfaceFactory()
         );
 
-        Container::$instance = $this;
     }
 
     /**
@@ -61,7 +57,8 @@ class Container implements ContainerInterface
      */
     public function get(string $id): mixed
     {
-        if ($id === Container::class) {
+        // Asking the container for a container, by either name, gives this one back.
+        if ($id === Container::class || $id === ContainerInterface::class) {
             return $this;
         }
 
@@ -81,7 +78,11 @@ class Container implements ContainerInterface
      */
     public function has(string $id): bool
     {
-        if ($id === Container::class || isset($this->instances[$id]) || isset($this->config[$id])) {
+        if ($id === Container::class || $id === ContainerInterface::class) {
+            return true;
+        }
+
+        if (isset($this->instances[$id]) || isset($this->config[$id])) {
             return true;
         }
 
@@ -121,7 +122,6 @@ class Container implements ContainerInterface
             throw $exception;
         }
 
-        Container::$instance = $this;
     }
 
     /**
@@ -205,15 +205,6 @@ class Container implements ContainerInterface
         }
 
         return null;
-    }
-
-    public static function getInstance(): Container
-    {
-        if (!isset(Container::$instance)) {
-            throw new ContainerNotInitialisedException('Container not initialised');
-        }
-
-        return Container::$instance;
     }
 
     public function isValue(string $id): bool

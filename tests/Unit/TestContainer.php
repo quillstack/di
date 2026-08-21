@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Quillstack\DI\Tests\Unit;
 
+use Psr\Container\ContainerInterface;
 use Quillstack\DI\Container;
 use Quillstack\DI\Exceptions\ClassLoopException;
 use Quillstack\DI\Exceptions\UnableToCreateReflectionClassException;
@@ -48,6 +49,14 @@ class TestContainer
         $this->assertExceptions->expect(UnableToCreateReflectionClassException::class);
 
         $this->container->get('UnknownClass');
+    }
+
+    public function theContainerIsGivenBackByEitherName()
+    {
+        $container = new Container();
+
+        $this->assertObject->instanceOf(Container::class, $container->get(Container::class));
+        $this->assertObject->instanceOf(Container::class, $container->get(ContainerInterface::class));
     }
 
     public function containerItself()

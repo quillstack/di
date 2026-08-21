@@ -69,8 +69,11 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      *
      * @return object
      */
-    private function createObjectWithParameters(string $id, ReflectionMethod $constructor = null): object
-    {
+    private function createObjectWithParameters(
+        string $id,
+        string $className,
+        ?ReflectionMethod $constructor = null
+    ): object {
         if ($constructor === null) {
             return new $id();
         }
@@ -78,7 +81,7 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
         // If we know here, that this object requires parameters, let's find them and return them later.
         $parameters = $constructor->getParameters();
 
-        return $this->createInstanceWithParameters($id, $parameters);
+        return $this->createInstanceWithParameters($id, $className, $parameters);
     }
 
     /**
@@ -86,11 +89,15 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      */
     public function create(string $id): object
     {
-        $constructor = $this->class->getConstructor();
-        $object = $this->createObjectWithParameters($id, $constructor);
+        // Building a dependency runs through this same factory and sets a class of its
+        // own, so the one being built here is read once and carried along.
+        $class = $this->class;
+        $className = $class->getName();
+
+        $object = $this->createObjectWithParameters($id, $className, $class->getConstructor());
         $properties = $this->getProperties($object);
 
-        return $this->createInstanceWithProperties($object, $properties);
+        return $this->createInstanceWithProperties($object, $className, $properties);
     }
 
     /**
@@ -119,7 +126,7 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      *
      * @return object
      */
-    private function createInstanceWithProperties($object, array $properties): object
+    private function createInstanceWithProperties($object, string $className, array $properties): object
     {
         foreach ($properties['properties'] as $property) {
             $name = $property->getName();
@@ -130,7 +137,13 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
                 continue;
             }
 
-            $valueFromConfig = $this->createParameterFromConfig($name);
+            // A promoted property was asked for through the constructor, where the
+            // configuration was already read, and a readonly one cannot be written twice.
+            if ($property->isPromoted() || $property->isReadOnly()) {
+                continue;
+            }
+
+            $valueFromConfig = $this->createParameterFromConfig($className, $name);
 
             if (class_exists($type) || interface_exists($type)) {
                 $object->$name = $this->container->get($type);
@@ -154,10 +167,10 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      *
      * @return object
      */
-    private function createInstanceWithParameters(string $id, array $parameters): object
+    private function createInstanceWithParameters(string $id, string $className, array $parameters): object
     {
         foreach ($parameters as $index => $parameter) {
-            $parameters[$index] = $this->createParameter($parameter);
+            $parameters[$index] = $this->createParameter($className, $parameter);
         }
 
         try {
@@ -177,12 +190,12 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      *
      * @return mixed
      */
-    private function createParameter($parameter): mixed
+    private function createParameter(string $className, $parameter): mixed
     {
         $parameterType = $parameter->getType();
 
         if (!$parameterType) {
-            return $this->createFromConfigOrGetDefault($parameter);
+            return $this->createFromConfigOrGetDefault($className, $parameter);
         }
 
         $parameterClassName = $parameterType->getName();
@@ -191,7 +204,7 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
             return $this->container->get($parameterClassName);
         }
 
-        return $this->createFromConfigOrGetDefault($parameter);
+        return $this->createFromConfigOrGetDefault($className, $parameter);
     }
 
     /**
@@ -199,11 +212,11 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      *
      * @return mixed
      */
-    private function createDefaultIfOptional($parameter): mixed
+    private function createDefaultIfOptional(string $className, $parameter): mixed
     {
         return $parameter->isOptional()
             ? $parameter->getDefaultValue()
-            : $this->createParameterFromConfig($parameter->getName());
+            : $this->createParameterFromConfig($className, $parameter->getName());
     }
 
     /**
@@ -211,16 +224,16 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      *
      * @return mixed
      */
-    private function createFromConfigOrGetDefault($parameter): mixed
+    private function createFromConfigOrGetDefault(string $className, $parameter): mixed
     {
         $parameterName = $parameter->getName();
-        $value = $this->createParameterFromConfig($parameterName);
+        $value = $this->createParameterFromConfig($className, $parameterName);
 
         if ($value !== null) {
             return $value;
         }
 
-        return $this->createDefaultIfOptional($parameter);
+        return $this->createDefaultIfOptional($className, $parameter);
     }
 
     /**
@@ -228,11 +241,8 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      *
      * @return mixed
      */
-    private function createParameterFromConfig(string $parameterName): mixed
+    private function createParameterFromConfig(string $className, string $parameterName): mixed
     {
-        return $this->container->getParameterForClass(
-            $this->class->getName(),
-            $parameterName
-        );
+        return $this->container->getParameterForClass($className, $parameterName);
     }
 }

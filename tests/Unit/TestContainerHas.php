@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Quillstack\DI\Tests\Unit;
 
+use Psr\Container\ContainerInterface;
 use Quillstack\DI\Container;
 use Quillstack\DI\Tests\Mocks\Config\MockClass;
 use Quillstack\DI\Tests\Mocks\Config\MockInterface;
@@ -35,6 +36,7 @@ class TestContainerHas
         $container = new Container();
 
         $this->assertBoolean->isTrue($container->has(Container::class));
+        $this->assertBoolean->isTrue($container->has(ContainerInterface::class));
     }
 
     public function hasInterfaceOnlyWhenConfigured()
