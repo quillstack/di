@@ -8,6 +8,7 @@ use Quillstack\DI\Container;
 use Quillstack\DI\Tests\Mocks\Config\MockClass;
 use Quillstack\DI\Tests\Mocks\Config\MockInterface;
 use Quillstack\DI\Tests\Mocks\Database\MockDatabase;
+use Quillstack\DI\Tests\Mocks\Loop\MockA;
 use Quillstack\DI\Tests\Mocks\Simple\MockController;
 use Quillstack\UnitTests\Types\AssertBoolean;
 
@@ -52,6 +53,17 @@ class TestContainerHas
         $container = new Container();
 
         $this->assertBoolean->isFalse($container->has('Unknown\\Class\\Name'));
+    }
+
+    /**
+     * A dependency loop means the entry is known but cannot be built, which is a container
+     * error rather than a not-found one, so `has()` still answers true.
+     */
+    public function hasClassWhichIsKnownButFailsToBuild()
+    {
+        $container = new Container();
+
+        $this->assertBoolean->isTrue($container->has(MockA::class));
     }
 
     public function hasNotClassWithUnresolvableParameters()
