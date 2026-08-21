@@ -123,10 +123,13 @@ class Container implements ContainerInterface
             /** @var class-string $id */
             $this->instances[$id] = $this->instanceFactory->create($id);
         } catch (ReflectionException $exception) {
-            array_pop($this->stack);
             $message = "Unable to create reflection class for `{$id}`";
 
             throw new UnableToCreateReflectionClassException($message, 500, $exception);
+        } finally {
+            // However this ended, the class is no longer being built. Leaving it on the
+            // stack would have the next attempt at the same one reported as a loop.
+            array_pop($this->stack);
         }
     }
 
