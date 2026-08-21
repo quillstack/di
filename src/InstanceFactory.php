@@ -84,7 +84,7 @@ final class InstanceFactory implements InstanceFactoryInterface
         $class = new ReflectionClass($id);
 
         if ($class->isInstantiable()) {
-            return $this->createInstantiable($id, $class);
+            return $this->createInstantiable($id);
         }
 
         if ($class->isInterface()) {
@@ -108,14 +108,11 @@ final class InstanceFactory implements InstanceFactoryInterface
 
     /**
      * Create an instance of the instantiable class.
-     *
-     * @param ReflectionClass<object> $class
      */
-    private function createInstantiable(string $id, ReflectionClass $class): object
+    private function createInstantiable(string $id): object
     {
         return $this->instantiableClassFactory
             ->setContainer($this->container)
-            ->setClass($class)
             ->create($id);
     }
 

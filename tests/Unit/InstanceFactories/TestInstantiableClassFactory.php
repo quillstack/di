@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Quillstack\DI\Tests\Unit\InstanceFactories;
 
 use Quillstack\DI\Container;
+use Quillstack\DI\Definitions\Definitions;
 use Quillstack\DI\InstanceFactories\InstantiableClassFactory;
 use Quillstack\DI\Tests\Mocks\Database\MockDatabase;
 use Quillstack\DI\Tests\Mocks\Database\MockDatabaseController;
@@ -36,7 +37,7 @@ class TestInstantiableClassFactory
     {
         $logger = new Logger();
         $logger->value = 3;
-        $this->factory = new InstantiableClassFactory();
+        $this->factory = new InstantiableClassFactory(new Definitions());
         $this->container = new Container([
             MockDatabase::class => [
                 'hostname' => self::HOSTNAME,

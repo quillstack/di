@@ -12,6 +12,7 @@ use Quillstack\DI\Exceptions\IncorrectClassTypeException;
 use Quillstack\DI\Exceptions\ClassNotFoundForInterfaceException;
 use Quillstack\DI\Exceptions\InterfaceDefinitionNotFoundException;
 use Quillstack\DI\Exceptions\UnableToCreateReflectionClassException;
+use Quillstack\DI\Definitions\Definitions;
 use Quillstack\DI\InstanceFactories\ClassFromInterfaceFactory;
 use Quillstack\DI\InstanceFactories\InstantiableClassFactory;
 use ReflectionException;
@@ -55,7 +56,7 @@ class Container implements ContainerInterface
         $this->config = $config;
         $this->instanceFactory = new InstanceFactory(
             $this,
-            new InstantiableClassFactory(),
+            new InstantiableClassFactory(new Definitions()),
             new ClassFromInterfaceFactory()
         );
 
