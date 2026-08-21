@@ -37,4 +37,17 @@ class TestAddToConfig
 
         $this->assertEqual->equal($mockClass, new MockClass());
     }
+
+    public function getConfigReturnsWhatWasGivenAndAdded()
+    {
+        $container = new Container([
+            MockInterface::class => MockClass::class,
+        ]);
+        $container->addToConfig(['parameter' => 'value']);
+
+        $this->assertEqual->equal([
+            MockInterface::class => MockClass::class,
+            'parameter' => 'value',
+        ], $container->getConfig());
+    }
 }

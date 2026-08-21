@@ -230,4 +230,13 @@ class Container implements ContainerInterface
     {
         $this->config += $config;
     }
+
+    /**
+     * The configuration this container was built with, plus anything added later. A test
+     * runner uses it to build a fresh container holding the same definitions.
+     */
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
 }
