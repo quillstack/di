@@ -39,8 +39,11 @@ class ClassFromInterfaceFactory implements InstanceFactoryWithContainerInterface
      */
     public function create(string $id): object
     {
-        return $this->container->get(
+        /** @var object $instance */
+        $instance = $this->container->get(
             $this->container->getInstantiableClassForInterface($id)
         );
+
+        return $instance;
     }
 }

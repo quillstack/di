@@ -18,7 +18,7 @@ final class InstanceFactory implements InstanceFactoryInterface
     /**
      * Cache for custom factories.
      *
-     * @var array
+     * @var array<string, CustomFactoryInterface>
      */
     private array $customFactories = [];
 
@@ -39,11 +39,9 @@ final class InstanceFactory implements InstanceFactoryInterface
     /**
      * Initialise cache for the custom factory.
      *
-     * @param string $customFactoryClassName
-     *
-     * @return CustomFactoryInterface|null
+     * @param class-string<CustomFactoryInterface> $customFactoryClassName
      */
-    public function classFromCustomFactory(string $customFactoryClassName): ?CustomFactoryInterface
+    public function classFromCustomFactory(string $customFactoryClassName): CustomFactoryInterface
     {
         if (!isset($this->customFactories[$customFactoryClassName])) {
             $this->customFactories[$customFactoryClassName] = new $customFactoryClassName();
@@ -55,14 +53,15 @@ final class InstanceFactory implements InstanceFactoryInterface
     /**
      * Creates a new instance.
      *
-     * @param string $id
+     * @param class-string $id
      *
-     * @return object
      * @throws ReflectionException
      */
     public function create(string $id): object
     {
-        if ($customFactoryClassName = $this->container->getCustomFactoryClassName($id)) {
+        $customFactoryClassName = $this->container->getCustomFactoryClassName($id);
+
+        if ($customFactoryClassName !== null && is_subclass_of($customFactoryClassName, CustomFactoryInterface::class)) {
             return $this->createFromCustomFactory($id, $customFactoryClassName);
         }
 
@@ -76,9 +75,8 @@ final class InstanceFactory implements InstanceFactoryInterface
     /**
      * Create a reflection and try to return an object.
      *
-     * @param string $id
+     * @param class-string $id
      *
-     * @return object
      * @throws ReflectionException|UnresolvableParameterTypeException
      */
     private function createFromReflection(string $id): object
@@ -99,10 +97,7 @@ final class InstanceFactory implements InstanceFactoryInterface
     /**
      * Create an instance from the custom factory.
      *
-     * @param string $id
-     * @param string $customFactoryClassName
-     *
-     * @return object
+     * @param class-string<CustomFactoryInterface> $customFactoryClassName
      */
     private function createFromCustomFactory(string $id, string $customFactoryClassName): object
     {
@@ -114,10 +109,7 @@ final class InstanceFactory implements InstanceFactoryInterface
     /**
      * Create an instance of the instantiable class.
      *
-     * @param string          $id
-     * @param ReflectionClass $class
-     *
-     * @return object
+     * @param ReflectionClass<object> $class
      */
     private function createInstantiable(string $id, ReflectionClass $class): object
     {

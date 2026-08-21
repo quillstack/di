@@ -23,11 +23,15 @@ class Container implements ContainerInterface
 {
     /**
      * Instances array.
+     *
+     * @var array<string, object>
      */
     private array $instances = [];
 
     /**
      * Current classes stack to detect loops.
+     *
+     * @var string[]
      */
     private array $stack = [];
 
@@ -38,9 +42,14 @@ class Container implements ContainerInterface
 
     /**
      * Configuration for interfaces and parameters.
+     *
+     * @var array<string, mixed>
      */
     private array $config;
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function __construct(array $config = [])
     {
         $this->config = $config;
@@ -110,18 +119,14 @@ class Container implements ContainerInterface
         $this->stack[] = $id;
 
         try {
+            /** @var class-string $id */
             $this->instances[$id] = $this->instanceFactory->create($id);
         } catch (ReflectionException $exception) {
             array_pop($this->stack);
             $message = "Unable to create reflection class for `{$id}`";
 
             throw new UnableToCreateReflectionClassException($message, 500, $exception);
-        } catch (\Exception $exception) {
-            array_pop($this->stack);
-
-            throw $exception;
         }
-
     }
 
     /**
@@ -151,11 +156,13 @@ class Container implements ContainerInterface
      */
     public function getParameterForClass(string $className, string $parameterName): mixed
     {
-        if (!isset($this->config[$className][$parameterName])) {
+        $parameters = $this->config[$className] ?? null;
+
+        if (!is_array($parameters)) {
             return null;
         }
 
-        return $this->config[$className][$parameterName];
+        return $parameters[$parameterName] ?? null;
     }
 
     public function getCustomFactoryClassName(string $classNameOrInterface): ?string
@@ -214,9 +221,15 @@ class Container implements ContainerInterface
 
     public function getValue(string $id): object
     {
-        return $this->config[$id];
+        /** @var object $value */
+        $value = $this->config[$id];
+
+        return $value;
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function addToConfig(array $config = []): void
     {
         $this->config += $config;
@@ -225,6 +238,8 @@ class Container implements ContainerInterface
     /**
      * The configuration this container was built with, plus anything added later. A test
      * runner uses it to build a fresh container holding the same definitions.
+     *
+     * @return array<string, mixed>
      */
     public function getConfig(): array
     {

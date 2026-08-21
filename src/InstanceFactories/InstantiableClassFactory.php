@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Quillstack\DI\InstanceFactories;
 
-use JetBrains\PhpStorm\ArrayShape;
 use Quillstack\DI\Container;
 use Quillstack\DI\Exceptions\ParameterDefinitionNotFoundException;
 use Quillstack\DI\InstanceFactoryWithContainerInterface;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
+use ReflectionParameter;
 use ReflectionProperty;
 use TypeError;
 
@@ -22,7 +23,7 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      * The instance of the Reflection class to find out all parameters we need to create before we initialise
      * the instance of the given class.
      *
-     * @var ReflectionClass
+     * @var ReflectionClass<object>
      */
     private ReflectionClass $class;
 
@@ -36,7 +37,7 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
     /**
      * Sets the instance of the Reflection class.
      *
-     * @param ReflectionClass $class
+     * @param ReflectionClass<object> $class
      *
      * @return InstantiableClassFactory
      */
@@ -103,12 +104,9 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
     /**
      * Finds only public properties with default values.
      *
-     * @param $object
-     *
-     * @return array
+     * @return array{properties: ReflectionProperty[], defaults: array<string, mixed>}
      */
-    #[ArrayShape(['properties' => "\ReflectionProperty[]", 'defaults' => "mixed[]"])]
-    private function getProperties($object): array
+    private function getProperties(object $object): array
     {
         $reflect = new ReflectionClass($object);
 
@@ -121,19 +119,19 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
     /**
      * Creates the instance of the class with properties.
      *
-     * @param $object
-     * @param array $properties
-     *
-     * @return object
+     * @param array{properties: ReflectionProperty[], defaults: array<string, mixed>} $properties
      */
-    private function createInstanceWithProperties($object, string $className, array $properties): object
+    private function createInstanceWithProperties(object $object, string $className, array $properties): object
     {
         foreach ($properties['properties'] as $property) {
             $name = $property->getName();
-            $type = $property->getType() ? $property->getType()->getName() : null;
+            $propertyType = $property->getType();
+            $type = $propertyType instanceof ReflectionNamedType ? $propertyType->getName() : null;
             $value = $properties['defaults'][$name] ?? null;
 
-            if (!$type) {
+            // A property with no type, or one written as a union or an intersection, says
+            // nothing about which single class to build for it.
+            if ($type === null) {
                 continue;
             }
 
@@ -151,7 +149,7 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
                 $object->$name = $valueFromConfig;
             } elseif ($value) {
                 $object->$name = $value;
-            } elseif ($property->getType()->allowsNull()) {
+            } elseif ($propertyType->allowsNull()) {
                 $object->$name = null;
             }
         }
@@ -162,10 +160,7 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
     /**
      * Creates the instance of the class and creates the instances from the parameters, if it's required.
      *
-     * @param string $id
-     * @param array $parameters
-     *
-     * @return object
+     * @param ReflectionParameter[] $parameters
      */
     private function createInstanceWithParameters(string $id, string $className, array $parameters): object
     {
@@ -186,15 +181,14 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
      * Create the instance of one parameter, if it's a class or an interface. For other parameters we try to find
      * the definition of this parameter in the Container.
      *
-     * @param $parameter
-     *
-     * @return mixed
      */
-    private function createParameter(string $className, $parameter): mixed
+    private function createParameter(string $className, ReflectionParameter $parameter): mixed
     {
         $parameterType = $parameter->getType();
 
-        if (!$parameterType) {
+        // Only a single named type names a class to build; a union or an intersection is
+        // looked up in the configuration like any other value.
+        if (!$parameterType instanceof ReflectionNamedType) {
             return $this->createFromConfigOrGetDefault($className, $parameter);
         }
 
@@ -207,24 +201,14 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
         return $this->createFromConfigOrGetDefault($className, $parameter);
     }
 
-    /**
-     * @param $parameter
-     *
-     * @return mixed
-     */
-    private function createDefaultIfOptional(string $className, $parameter): mixed
+    private function createDefaultIfOptional(string $className, ReflectionParameter $parameter): mixed
     {
         return $parameter->isOptional()
             ? $parameter->getDefaultValue()
             : $this->createParameterFromConfig($className, $parameter->getName());
     }
 
-    /**
-     * @param $parameter
-     *
-     * @return mixed
-     */
-    private function createFromConfigOrGetDefault(string $className, $parameter): mixed
+    private function createFromConfigOrGetDefault(string $className, ReflectionParameter $parameter): mixed
     {
         $parameterName = $parameter->getName();
         $value = $this->createParameterFromConfig($className, $parameterName);
