@@ -29,8 +29,12 @@ jobs:
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -41,6 +45,13 @@ jobs:
 
       - name: Unit tests with coverage
         run: phpdbg -qrr vendor/bin/unit-tests
+
+      # Only where the token is there, so a fork or a repository without it still passes.
+      - name: SonarCloud
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_HOST_URL: https://sonarcloud.io
 
   static-analysis:
     name: Static analysis
