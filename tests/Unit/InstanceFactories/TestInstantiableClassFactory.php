@@ -12,6 +12,7 @@ use Quillstack\DI\Tests\Mocks\Database\MockDatabaseController;
 use Quillstack\DI\Tests\Mocks\FirstConfig\MockFirstFactory;
 use Quillstack\DI\Tests\Mocks\FirstConfig\MockNoConfigForFactory;
 use Quillstack\DI\Tests\Mocks\Object\Logger;
+use Quillstack\DI\Tests\Mocks\Object\LoggerInterface;
 use Quillstack\DI\Tests\Mocks\Object\Service;
 use Quillstack\DI\Tests\Mocks\Optional\MockOptionalController;
 use Quillstack\DI\Tests\Mocks\ParameterConfig\MockConfig;
@@ -20,7 +21,6 @@ use Quillstack\DI\Tests\Mocks\Properties\MockProperties;
 use Quillstack\DI\Tests\Mocks\Simple\MockController;
 use Quillstack\DI\Tests\Mocks\Simple\MockRepository;
 use Quillstack\DI\Tests\Mocks\Simple\MockService;
-use Quillstack\DI\Tests\Mocks\Object\LoggerInterface;
 use Quillstack\UnitTests\AssertEqual;
 use Quillstack\UnitTests\Types\AssertObject;
 
