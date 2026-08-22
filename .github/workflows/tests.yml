@@ -49,6 +49,8 @@ jobs:
       # Only where the token is there, so a fork or a repository without it still passes.
       - name: SonarCloud
         if: env.SONAR_TOKEN != ''
+        # Reporting, not a gate: a token which has expired should not turn a green suite red.
+        continue-on-error: true
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_HOST_URL: https://sonarcloud.io
