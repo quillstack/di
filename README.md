@@ -16,8 +16,6 @@
 
 Quillstack DI Container is the dependency injection container based
 on _PSR-11: Container interface_, and with the main goal: to be fast.
-You can find the full documentation on the website: \
-https://quillstack.org/di
 
 This DI container uses constructors and types of class properties.
 
