@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   pull_request:
+  # So a run can be asked for without pushing something to ask for it.
+  workflow_dispatch:
 
 jobs:
   tests:
