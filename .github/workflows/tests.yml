@@ -61,7 +61,7 @@ jobs:
         if: env.SONAR_TOKEN != ''
         # Reporting, not a gate: a token which has expired should not turn a green suite red.
         continue-on-error: true
-        uses: SonarSource/sonarqube-scan-action@2f77a1ec69fb1d595b06f35ab27e97605bdef703 # v5
+        uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
         env:
           SONAR_HOST_URL: https://sonarcloud.io
 
