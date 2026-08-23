@@ -107,7 +107,7 @@ $controller = $container->get(ExampleController::class);
 Every time you will get a database object, a container will use `localhost` as
 a value for `$hostname` parameter:
 
-```phpt
+```php
 <?php
 
 class Database
