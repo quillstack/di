@@ -59,7 +59,6 @@ class Container implements ContainerInterface
             new InstantiableClassFactory(new Definitions()),
             new ClassFromInterfaceFactory()
         );
-
     }
 
     /**
