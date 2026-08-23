@@ -1,0 +1,12 @@
+version: 2
+
+updates:
+  # The actions are pinned to commits, which is the only form of pinning a tag cannot be moved
+  # out from under. That leaves updating them a manual job, so it is given to somebody whose
+  # job it is: a pull request per new version, with the release notes attached.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: CI
