@@ -41,7 +41,7 @@ class TestInstantiableClassFactory
         $this->container = new Container([
             MockDatabase::class => [
                 'hostname' => self::HOSTNAME,
-                'user'     => self::USER,
+                'user' => self::USER,
                 'password' => self::PASSWORD,
                 'database' => self::DATABASE,
             ],
@@ -118,7 +118,7 @@ class TestInstantiableClassFactory
     public function firstConfigThenDefaultValue()
     {
         $factory = $this->container->get(MockFirstFactory::class);
-        $factoryNoConfig  = $this->container->get(MockNoConfigForFactory::class);
+        $factoryNoConfig = $this->container->get(MockNoConfigForFactory::class);
 
         $this->assertEqual->equal(0, $factory->level);
         $this->assertEqual->equal(300, $factoryNoConfig->level);
