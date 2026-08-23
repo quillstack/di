@@ -1,5 +1,13 @@
 name: Tests
 
+# This package is in its own dependency graph: `unit-tests` needs `di` and `di` needs
+# `unit-tests` to test itself. Composer works out what version the root package is from the
+# branch it is on, and a pull request is built from a detached merge commit which is on no
+# branch — so the root came out as `dev-<sha>`, satisfied nobody, and every pull request here
+# failed to install before it ran a single test.
+env:
+  COMPOSER_ROOT_VERSION: 0.6.x-dev
+
 on:
   push:
     branches: [main]
