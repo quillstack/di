@@ -31,7 +31,7 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
 
-      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
 
       - name: Unit tests
         run: vendor/bin/unit-tests
@@ -51,7 +51,7 @@ jobs:
           php-version: '8.3'
           coverage: none
 
-      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
 
       - name: Unit tests with coverage
         run: phpdbg -qrr vendor/bin/unit-tests
@@ -76,7 +76,7 @@ jobs:
           php-version: '8.3'
           coverage: none
 
-      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # v3
+      - uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
 
       - name: PHPStan
         run: vendor/bin/phpstan analyse --no-progress
