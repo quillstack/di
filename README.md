@@ -154,6 +154,29 @@ $container->get(ReportController::class)->report;   // App\SalesReport
 `create()` is given the id that was asked for, which is what lets one factory serve a whole
 family.
 
+### Collaborators a class can do without
+
+A constructor saying a dependency is optional is taken at its word:
+
+```php
+final class FileQueue
+{
+    public function __construct(
+        private readonly StorageInterface $storage,
+        private readonly string $directory,
+        private readonly ?ClockInterface $clock = null   // works without one
+    ) {
+    }
+}
+```
+
+Register a clock and it is used. Register none and the class is built with `null`, rather than
+refused for wanting something it said it could manage without.
+
+The line is between *nothing registered* and *registered but broken*. Only the first becomes
+the default; a binding which exists and throws on the way up is a mistake you want to hear
+about, and handing back `null` instead would move the failure somewhere further away.
+
 ### Asking whether it can
 
 ```php

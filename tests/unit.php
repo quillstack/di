@@ -8,6 +8,7 @@ return [
     \Quillstack\DI\Tests\Unit\TestInstanceFactory::class,
     \Quillstack\DI\Tests\Unit\TestNestedConfig::class,
     \Quillstack\DI\Tests\Unit\TestUnionTypes::class,
+    \Quillstack\DI\Tests\Unit\TestOptionalDependencies::class,
     \Quillstack\DI\Tests\Unit\TestLoopStack::class,
     \Quillstack\DI\Tests\Unit\TestConfiguredCustomFactory::class,
 

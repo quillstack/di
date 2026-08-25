@@ -8,6 +8,7 @@ use Quillstack\DI\Container;
 use Quillstack\DI\Definitions\Definitions;
 use Quillstack\DI\Exceptions\ParameterDefinitionNotFoundException;
 use Quillstack\DI\InstanceFactoryWithContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use TypeError;
 
 /**
@@ -76,7 +77,7 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
     private function readParameter(string $className, array $parameter): mixed
     {
         if (is_string($parameter['class'])) {
-            return $this->container->get($parameter['class']);
+            return $this->buildOrDefault($parameter);
         }
 
         /** @var string $name */
@@ -88,6 +89,37 @@ class InstantiableClassFactory implements InstanceFactoryWithContainerInterface
         }
 
         return $parameter['optional'] === true ? $parameter['default'] : null;
+    }
+
+    /**
+     * Builds what the parameter names, or hands back the default where it is optional and
+     * the container has nothing to build it from.
+     *
+     * An optional collaborator — `?ClockInterface $clock = null`, and everything shaped like
+     * it — says the class works without one. Refusing to build the class at all because
+     * nobody registered the thing it said it could do without is refusing to honour the
+     * signature.
+     *
+     * Only *nothing registered* is caught. A binding which exists and fails to build is a
+     * mistake somebody wants to hear about, and quietly passing null instead would turn it
+     * into a null reference somewhere further away.
+     *
+     * @param array<string, mixed> $parameter
+     */
+    private function buildOrDefault(array $parameter): mixed
+    {
+        /** @var string $class */
+        $class = $parameter['class'];
+
+        if ($parameter['optional'] !== true) {
+            return $this->container->get($class);
+        }
+
+        try {
+            return $this->container->get($class);
+        } catch (NotFoundExceptionInterface) {
+            return $parameter['default'];
+        }
     }
 
     /**
